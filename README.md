@@ -24,3 +24,13 @@ depends on `ElementarySwift` must also enable it:
   on the depending target.
 
 Plain `extern "C"`-style consumption (e.g. CocoaPods) is not supported.
+
+## Examples
+
+`Examples/ElementaryExample` is a minimal macOS SwiftUI app that depends on
+this package via a local path dependency, demonstrating how an external
+project would `import ElementarySwift` and construct a runtime. Run it with:
+```
+cd Examples/ElementaryExample
+swift run
+```
