@@ -1,8 +1,9 @@
 #include "CElementaryShim/ElementaryRuntime.h"
 #include <elem/Runtime.h>
 
-namespace elementary_swift {
+namespace ElementarySwift {
 
+// TODO: Why was the pimpl pattern necessary here?
 struct ElementaryRuntime::Impl {
     elem::Runtime<float> runtime;
     Impl(double sampleRate, int blockSize) : runtime(sampleRate, blockSize) {}

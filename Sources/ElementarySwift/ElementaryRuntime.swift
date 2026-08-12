@@ -3,10 +3,10 @@ import CElementaryShim
 /// Swift-idiomatic wrapper around the C++ `elementary_swift::ElementaryRuntime`
 /// shim, which itself wraps the templated `elem::Runtime<float>`.
 public final class ElementaryAudioRuntime {
-    private var cxxRuntime: elementary_swift.ElementaryRuntime
+    private var cxxRuntime: ElementarySwift.ElementaryRuntime
 
     public init(sampleRate: Double, blockSize: Int32) {
-        cxxRuntime = elementary_swift.ElementaryRuntime(sampleRate, blockSize)
+        cxxRuntime = ElementarySwift.ElementaryRuntime(sampleRate, blockSize)
     }
 
     /// Feeds a JSON-encoded instruction batch (as produced by @elemaudio/core)
