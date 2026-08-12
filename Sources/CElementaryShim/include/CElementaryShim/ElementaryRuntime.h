@@ -1,0 +1,43 @@
+#pragma once
+#include <cstddef>
+#include <memory>
+#include <string>
+
+namespace elementary_swift {
+
+// Concrete, non-template class -- the only thing Swift's C++ importer sees.
+// Wraps elem::Runtime<float> via pimpl so the template never leaks into
+// this public header.
+class ElementaryRuntime {
+public:
+    ElementaryRuntime(double sampleRate, int blockSize);
+    ~ElementaryRuntime();
+
+    ElementaryRuntime(const ElementaryRuntime&) = delete;
+    ElementaryRuntime& operator=(const ElementaryRuntime&) = delete;
+    // Defined in the .cpp (not '= default' here) since Impl is incomplete
+    // in this header -- unique_ptr's move operations need the full type.
+    ElementaryRuntime(ElementaryRuntime&&);
+    ElementaryRuntime& operator=(ElementaryRuntime&&);
+
+    // Feeds a JSON-encoded instruction batch (the wire format produced by
+    // @elemaudio/core) into elem::Runtime::applyInstructions. Returns the
+    // underlying instruction-application result code.
+    int applyInstructionsJSON(const std::string& json);
+
+    // Realtime audio callback. Non-interleaved buffers, matching
+    // elem::Runtime<float>::process exactly. Pointers may be null when
+    // numInputChannels/numOutputChannels == 0.
+    void process(
+        const float** inputChannelData, size_t numInputChannels,
+        float** outputChannelData, size_t numOutputChannels,
+        size_t numSamples);
+
+    void reset();
+
+private:
+    struct Impl;
+    std::unique_ptr<Impl> impl_;
+};
+
+} // namespace elementary_swift
