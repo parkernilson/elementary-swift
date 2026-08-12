@@ -1,0 +1,3 @@
+[submodule "Vendor/elementary"]
+	path = Vendor/elementary
+	url = git@github.com:parkernilson/elementary.git
