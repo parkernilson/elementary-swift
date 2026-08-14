@@ -9,13 +9,6 @@ public final class ElementaryAudioRuntime {
         cxxRuntime = ElementarySwift.ElementaryRuntime(sampleRate, blockSize)
     }
 
-    /// Feeds a JSON-encoded instruction batch (as produced by @elemaudio/core)
-    /// into the underlying runtime. Returns the runtime's result code.
-    @discardableResult
-    public func applyInstructions(json: String) -> Int32 {
-        Int32(cxxRuntime.applyInstructionsJSON(std.string(json)))
-    }
-
     /// Processes one block of audio in place, using non-interleaved buffers.
     public func process(output: inout [[Float]], numFrames: Int) {
         let numChannels = output.count
