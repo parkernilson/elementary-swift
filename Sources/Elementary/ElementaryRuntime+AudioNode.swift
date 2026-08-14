@@ -1,6 +1,6 @@
 import AVFoundation
 
-extension ElementaryAudioRuntime {
+extension ElementaryRuntime {
     /// Builds an `AVAudioSourceNode` wired to this renderer's own
     /// `render`/`process` pipeline -- the Swift-side counterpart to
     /// `WebRenderer.initialize(audioContext) -> AudioWorkletNode`. Unlike that JS
@@ -25,7 +25,7 @@ extension ElementaryAudioRuntime {
             let outputPtrs: [UnsafeMutablePointer<Float>?] = ablPointer.map {
                 $0.mData?.assumingMemoryBound(to: Float.self)
             }
-            self.process(outputData: outputPtrs, outputChannels: outputPtrs.count, numSamples: Int(frameCount))
+//            self.process(outputData: outputPtrs, outputChannels: outputPtrs.count, numSamples: Int(frameCount))
             return noErr
         }
     }

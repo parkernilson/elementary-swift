@@ -1,16 +1,23 @@
 // swift-tools-version:5.9
 import PackageDescription
+import Foundation
+
+// TODO: Is there a better way to do this??
+let elementaryRuntimeIncludePath = URL(fileURLWithPath: #filePath)
+    .deletingLastPathComponent()
+    .appendingPathComponent("Vendor/elementary/runtime")
+    .path
 
 let package = Package(
-    name: "ElementarySwift",
+    name: "Elementary",
     platforms: [
         .macOS(.v13),
         .iOS(.v16),
     ],
     products: [
         .library(
-            name: "ElementarySwift",
-            targets: ["ElementarySwift"]
+            name: "Elementary",
+            targets: ["Elementary"]
         ),
     ],
     targets: [
@@ -18,26 +25,28 @@ let package = Package(
         // Swift's C++ importer needs a concrete API surface since it can't
         // import C++ class templates directly.
         .target(
-            name: "CElementaryShim",
-            path: "Sources/CElementaryShim",
+            name: "ElementaryCore",
+            path: "Sources/ElementaryCore",
             cxxSettings: [
                 .headerSearchPath("../../Vendor/elementary/runtime"),
             ]
         ),
         .target(
-            name: "ElementarySwift",
-            dependencies: ["CElementaryShim"],
-            path: "Sources/ElementarySwift",
+            name: "Elementary",
+            dependencies: ["ElementaryCore"],
+            path: "Sources/Elementary",
             swiftSettings: [
                 .interoperabilityMode(.Cxx),
+                .unsafeFlags(["-Xcc", "-I\(elementaryRuntimeIncludePath)"]),
             ]
         ),
         .testTarget(
-            name: "ElementarySwiftTests",
-            dependencies: ["ElementarySwift"],
-            path: "Tests/ElementarySwiftTests",
+            name: "ElementaryTests",
+            dependencies: ["Elementary"],
+            path: "Tests/ElementaryTests",
             swiftSettings: [
                 .interoperabilityMode(.Cxx),
+                .unsafeFlags(["-Xcc", "-I\(elementaryRuntimeIncludePath)"]),
             ]
         ),
     ],

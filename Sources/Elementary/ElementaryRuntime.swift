@@ -1,12 +1,12 @@
-import CElementaryShim
+import ElementaryCore
 
 /// Swift-idiomatic wrapper around the C++ `elementary_swift::ElementaryRuntime`
 /// shim, which itself wraps the templated `elem::Runtime<float>`.
-public final class ElementaryAudioRuntime {
-    private var cxxRuntime: ElementarySwift.ElementaryRuntime
+public final class ElementaryRuntime {
+    private var coreRuntime: ElementaryCore.Runtime
 
     public init(sampleRate: Double, blockSize: Int32) {
-        cxxRuntime = ElementarySwift.ElementaryRuntime(sampleRate, blockSize)
+        coreRuntime = ElementaryCore.Runtime(sampleRate, blockSize)
     }
 
     /// Processes one block of audio in place, using non-interleaved buffers.
@@ -16,7 +16,7 @@ public final class ElementaryAudioRuntime {
             withChannelPointers(channels, index: 0, numChannels: numChannels, collected: []) { pointers in
                 var pointers = pointers
                 pointers.withUnsafeMutableBufferPointer { buffer in
-                    cxxRuntime.process(nil, 0, buffer.baseAddress, numChannels, numFrames)
+                    coreRuntime.process(nil, 0, buffer.baseAddress, numChannels, numFrames)
                 }
             }
         }
@@ -44,6 +44,6 @@ public final class ElementaryAudioRuntime {
     }
 
     public func reset() {
-        cxxRuntime.reset()
+        coreRuntime.reset()
     }
 }
