@@ -1,8 +1,9 @@
 import Foundation
+import ElementaryCore
 
 /// Renders an AudioGraph to the Elementary Audio runtime
 public final class AudioGraphRenderer: @unchecked Sendable {
-    
+    private let renderer: elem.Renderer
     
     // TODO: Keep this?
     /// Errors that can occur during graph rendering
@@ -25,7 +26,10 @@ public final class AudioGraphRenderer: @unchecked Sendable {
 
     /// Creates a new graph renderer
     // TODO: We need a `Renderer` from the c++ layer as a member created in the constructor
-    public init() {}
+    public init() {
+        // TODO: Implement this correctly
+        self.renderer = elem.Renderer()
+    }
 
     /// Renders an audio graph to the runtime
     ///
@@ -37,6 +41,7 @@ public final class AudioGraphRenderer: @unchecked Sendable {
         gc()
 
         // TODO: Call this.renderer.renderGraph(graph)
+        self.renderer.renderGraph(graph.toCore())
     }
 
     /// Runs garbage collection on the runtime, releasing unused nodes
