@@ -50,8 +50,5 @@ let package = Package(
             ]
         ),
     ],
-    // TODO: Should we target cxx17 language standard since the CLI and wasm targets in Elementary Core
-    // are cxx17? Or can we do cxx2b since they don't need the Renderer and the Renderer is built to be used
-    // only in native targets?
-    cxxLanguageStandard: .cxx2b
+    cxxLanguageStandard: .cxx17
 )

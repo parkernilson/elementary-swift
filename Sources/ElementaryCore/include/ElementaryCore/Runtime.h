@@ -32,7 +32,11 @@ public:
         const float** inputChannelData, size_t numInputChannels,
         float** outputChannelData, size_t numOutputChannels,
         size_t numSamples);
-
+    
+    // TODO: Implement event processing
+    
+    // TODO: Implement createRef (or similar feature)
+    
     void reset();
 
 private:

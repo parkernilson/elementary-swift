@@ -19,4 +19,4 @@ void Runtime::reset() {
     mRuntime.reset();
 }
 
-} // namespace ElementarySwift
+} // namespace ElementaryCore

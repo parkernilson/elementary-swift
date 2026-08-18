@@ -17,7 +17,7 @@ public:
     Renderer(const Renderer&&);
     Renderer& operator=(const Renderer&&);
     
-//    void renderGraph(std::vector<elem::SymbolicGraphNode> graphs, elem::RenderOptions options);
+    void renderGraph(std::vector<elem::SymbolicGraphNode> graphs, elem::RenderOptions options);
     
 private:
     std::unique_ptr<elem::Renderer<float>> mRenderer;

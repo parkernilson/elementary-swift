@@ -10,3 +10,7 @@
 #include <elem/SymbolicGraph.h>
 #include "ElementaryCore/Renderer.h"
 #include "ElementaryCore/Runtime.h"
+
+namespace elem {
+using GraphNodeVector = std::vector<SymbolicGraphNode>;
+}

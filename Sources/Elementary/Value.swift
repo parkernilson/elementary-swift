@@ -44,32 +44,7 @@ extension Value: ExpressibleByDictionaryLiteral {
     }
 }
 
-//==============================================================================
-// Conversion to/from the underlying elem::js::Value representation
-extension Value {
-    // NOTE: elem::js::Value can also hold Undefined, Function, and Float32Array,
-    // none of which this type surfaces publicly. Any of those coming from the
-    // core are collapsed to `.null` rather than modeled here.
-    init(core: elem.js.Value) {
-        if core.isBool() {
-            self = .bool(Bool(core))
-        } else if core.isNumber() {
-            self = .number(Double(core))
-        } else if core.isString() {
-            self = .string(String(core))
-        } else if core.isArray() {
-            self = .array(core.getArray().map(Value.init(core:)))
-        } else if core.isObject() {
-            var object: [String: Value] = [:]
-            for entry in core.getObject() {
-                object[String(entry.first)] = Value(core: entry.second)
-            }
-            self = .object(object)
-        } else {
-            self = .null
-        }
-    }
-
+internal extension Value {
     func toCore() -> elem.js.Value {
         switch self {
         case .null:
@@ -81,17 +56,31 @@ extension Value {
         case .string(let value):
             return elem.js.Value(std.string(value))
         case .array(let values):
-            var array = elem.js.Array()
-            for value in values {
-                array.push_back(value.toCore())
-            }
-            return elem.js.Value(array)
+            return elem.js.Value(values.toCore())
         case .object(let object):
-            var props = elem.js.Object()
-            for (key, value) in object {
-                props[std.string(key)] = value.toCore()
-            }
-            return elem.js.Value(props)
+            return elem.js.Value(object.toCore())
         }
     }
 }
+
+internal extension Dictionary where Key == String, Value == Elementary.Value {
+    func toCore() -> elem.js.Object {
+        var props = elem.js.Object()
+        for (key, value) in self {
+            props[std.string(key)] = value.toCore()
+        }
+        return props
+    }
+}
+
+internal extension Array where Element == Elementary.Value {
+    func toCore() -> elem.js.Array {
+        var array = elem.js.Array()
+        for value in self {
+            array.push_back(value.toCore())
+        }
+        return array
+    }
+}
+
+
