@@ -2,7 +2,7 @@ import ElementaryCore
 
 /// Swift-idiomatic wrapper around the C++ `elementary_swift::ElementaryRuntime`
 /// shim, which itself wraps the templated `elem::Runtime<float>`.
-public final class ElementaryRuntime {
+public final class Runtime {
     private var coreRuntime: ElementaryCore.Runtime
 
     public init(sampleRate: Double, blockSize: Int32) {

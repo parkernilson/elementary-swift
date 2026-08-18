@@ -2,26 +2,21 @@
 
 namespace ElementaryCore {
 
-Runtime::Runtime(double sampleRate, int blockSize): runtime{std::make_unique<elem::Runtime<float>>(sampleRate, blockSize)} {}
-
-// TODO: Are these necessary here?
-//~Runtime() = default;
-//Runtime(Runtime&&) = default;
-//Runtime& Runtime::operator=(Runtime&&) = default;
+Runtime::Runtime(double sampleRate, int blockSize): mRuntime{std::make_shared<elem::Runtime<float>>(sampleRate, blockSize)} {}
 
 void Runtime::process(
     const float** inputChannelData, size_t numInputChannels,
     float** outputChannelData, size_t numOutputChannels,
     size_t numSamples)
 {
-    runtime->process(
+    mRuntime->process(
         inputChannelData, numInputChannels,
         outputChannelData, numOutputChannels,
         numSamples, nullptr);
 }
 
 void Runtime::reset() {
-    runtime.reset();
+    mRuntime.reset();
 }
 
 } // namespace ElementarySwift

@@ -22,8 +22,6 @@ public:
 
     Runtime(const Runtime&) = delete;
     Runtime& operator=(const Runtime&) = delete;
-    // Defined in the .cpp (not '= default' here) since Impl is incomplete
-    // in this header -- unique_ptr's move operations need the full type.
     Runtime(Runtime&&);
     Runtime& operator=(Runtime&&);
 
@@ -38,7 +36,8 @@ public:
     void reset();
 
 private:
-    std::unique_ptr<elem::Runtime<float>> runtime;
+    friend class Renderer;
+    std::shared_ptr<elem::Runtime<float>> mRuntime;
 };
 
 } // namespace ElementaryCore

@@ -8,5 +8,5 @@
 #pragma once
 
 #include <elem/SymbolicGraph.h>
-#include "Runtime.h"
-#include "Renderer.h"
+#include "ElementaryCore/Renderer.h"
+#include "ElementaryCore/Runtime.h"
