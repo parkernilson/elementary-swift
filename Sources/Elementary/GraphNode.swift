@@ -18,6 +18,7 @@ internal extension Array where Element == GraphNode {
     func toCore() -> elem.GraphNodeVector {
         var nodes = elem.GraphNodeVector()
         for child in self {
+            // TODO: Why does this use an ampersand? Is this correct?
             elem.appendGraphNode(&nodes, child.build())
         }
         return nodes

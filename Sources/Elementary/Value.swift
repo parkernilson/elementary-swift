@@ -77,6 +77,7 @@ internal extension Array where Element == Elementary.Value {
     func toCore() -> elem.js.Array {
         var array = elem.js.Array()
         for value in self {
+            // TODO: Optimization, move instead of copy
             array.push_back(value.toCore())
         }
         return array

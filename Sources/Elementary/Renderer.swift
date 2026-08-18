@@ -9,8 +9,6 @@ import ElementaryCore
 
 class Renderer {
     struct Options {
-        // TODO: Maybe these should be UInt32 or Double
-        // since they are converted to js::Number under the hood
         public let fadeInMs: Int32
         public let fadeOutMs: Int32
         
