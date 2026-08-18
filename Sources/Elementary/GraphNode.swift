@@ -18,7 +18,7 @@ internal extension Array where Element == GraphNode {
     func toCore() -> elem.GraphNodeVector {
         var nodes = elem.GraphNodeVector()
         for child in self {
-            nodes.push_back(child.build())
+            elem.appendGraphNode(&nodes, child.build())
         }
         return nodes
     }
