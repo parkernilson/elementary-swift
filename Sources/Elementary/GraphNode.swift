@@ -1,4 +1,4 @@
-import ElementaryCore
+internal import ElementaryCore
 
 struct GraphNode {
     public let kind: String

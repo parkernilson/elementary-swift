@@ -13,10 +13,7 @@ let package = Package(
         .executableTarget(
             name: "ElementaryExample",
             dependencies: [
-                .product(name: "ElementarySwift", package: "elementary-swift"),
-            ],
-            swiftSettings: [
-                .interoperabilityMode(.Cxx),
+                .product(name: "Elementary", package: "elementary-swift"),
             ]
         ),
     ]

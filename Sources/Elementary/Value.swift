@@ -1,4 +1,4 @@
-import ElementaryCore
+internal import ElementaryCore
 
 /// A Swift-native representation of the dynamic, JSON-like values used to
 /// describe node parameters in the underlying Elementary runtime.

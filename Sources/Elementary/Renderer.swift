@@ -5,7 +5,7 @@
 //  Created by Parker Nilson on 8/17/26.
 //
 
-import ElementaryCore
+internal import ElementaryCore
 
 class Renderer {
     struct Options {
