@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <elem/SymbolicGraph.h>
+#include "../Vendor/elementary/runtime/elem/SymbolicGraph.h"
 #include "ElementaryCore/Renderer.h"
 #include "ElementaryCore/Runtime.h"
 

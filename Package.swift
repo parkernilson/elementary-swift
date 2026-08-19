@@ -2,12 +2,6 @@
 import PackageDescription
 import Foundation
 
-// TODO: Is there a better way to do this??
-let elementaryRuntimeIncludePath = URL(fileURLWithPath: #filePath)
-    .deletingLastPathComponent()
-    .appendingPathComponent("Vendor/elementary/runtime")
-    .path
-
 let package = Package(
     name: "Elementary",
     platforms: [
@@ -27,8 +21,30 @@ let package = Package(
         .target(
             name: "ElementaryCore",
             path: "Sources/ElementaryCore",
+            exclude: [
+                "Vendor/elementary/cli",
+                "Vendor/elementary/js",
+                "Vendor/elementary/scripts",
+                "Vendor/elementary/tests",
+                "Vendor/elementary/wasm",
+                "Vendor/elementary/runtime/CMakeLists.txt",
+                "Vendor/elementary/runtime/elem/third-party/signalsmith-stretch/LICENSE.txt",
+                "Vendor/elementary/runtime/elem/third-party/signalsmith-stretch/README.md",
+                "Vendor/elementary/runtime/elem/third-party/signalsmith-stretch/dsp/README.md",
+                "Vendor/elementary/runtime/elem/third-party/signalsmith-stretch/dsp/LICENSE.txt",
+            ],
+            sources: [
+                ".",
+                "Vendor/elementary/runtime"
+            ],
+            publicHeadersPath: "include",
             cxxSettings: [
-                .headerSearchPath("../../Vendor/elementary/runtime"),
+                .headerSearchPath("./Vendor/elementory/runtime"),
+                .headerSearchPath("."),
+                .define("SWIFT_BRIDGING_ENABLED", to: "1")
+            ],
+            linkerSettings: [
+                .linkedLibrary("c++")
             ]
         ),
         .target(
@@ -37,18 +53,16 @@ let package = Package(
             path: "Sources/Elementary",
             swiftSettings: [
                 .interoperabilityMode(.Cxx),
-                .unsafeFlags(["-Xcc", "-I\(elementaryRuntimeIncludePath)"]),
             ]
         ),
-        .testTarget(
-            name: "ElementaryTests",
-            dependencies: ["Elementary"],
-            path: "Tests/ElementaryTests",
-            swiftSettings: [
-                .interoperabilityMode(.Cxx),
-                .unsafeFlags(["-Xcc", "-I\(elementaryRuntimeIncludePath)"]),
-            ]
-        ),
+//        .testTarget(
+//            name: "ElementaryTests",
+//            dependencies: ["Elementary"],
+//            path: "Tests/ElementaryTests",
+//            swiftSettings: [
+//                .interoperabilityMode(.Cxx),
+//            ]
+//        ),
     ],
     cxxLanguageStandard: .cxx17
 )

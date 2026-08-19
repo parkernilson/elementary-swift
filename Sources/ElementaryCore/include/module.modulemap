@@ -1,0 +1,5 @@
+module ElementaryCore {
+    header "ElementaryCore/ElementaryCore.h"
+    requires cplusplus
+    export *
+}

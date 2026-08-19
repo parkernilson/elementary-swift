@@ -1,8 +1,9 @@
 #pragma once
 
-#include <elem/SymbolicGraph.h>
-#include <elem/Renderer.h>
-#include "ElementaryCore/Runtime.h"
+#include "../Vendor/elementary/runtime/elem/Renderer.h"
+#include "../Vendor/elementary/runtime/elem/Runtime.h"
+#include "../Vendor/elementary/runtime/elem/SymbolicGraph.h"
+#include "Runtime.h"
 
 namespace ElementaryCore {
 
