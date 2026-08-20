@@ -11,6 +11,9 @@ public enum El {
         return GraphNode(ElementaryCore.constant(x))
     }
 
+    // TODO: These helpers are for people who want to create their own compositions in swift
+    // however we may be duplicating some functionality (like resolving the variant ElemNode type).
+    // However, for all the stdlib helpers we can just use the underlying implementation.
     public static func resolve(_ x: ElemNode) -> GraphNode {
         return switch(x) {
             case .num(let num): constant(num)
