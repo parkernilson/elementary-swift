@@ -1,25 +1,19 @@
 internal import ElementaryCore
 
-struct GraphNode {
-    public let kind: String
-    public let params: [String: Value]
-    public let children: [GraphNode]
+class GraphNode {
+    internal var node: ElementaryCore.GraphNodeSPtr
     
-    internal func build() -> elem.SymbolicGraphNode {
-        return elem.SymbolicGraph.createNode(
-            std.string(self.kind),
-            self.params.toCore(),
-            self.children.toCore()
-        )
+    public init(kind: String, params: [String: Value], children: [GraphNode]) {
+        self.node = elem.SymbolicGraph.createNode(std.string(kind), params.toCore(), children.toCore())
     }
 }
 
 internal extension Array where Element == GraphNode {
-    func toCore() -> elem.GraphNodeVector {
-        var nodes = elem.GraphNodeVector()
+    func toCore() -> ElementaryCore.GraphNodeSPtrVector {
+        var nodes = ElementaryCore.GraphNodeSPtrVector()
         for child in self {
             // TODO: Why does this use an ampersand? Is this correct?
-            elem.appendGraphNode(&nodes, child.build())
+            ElementaryCore.appendGraphNode(&nodes, child.node)
         }
         return nodes
     }

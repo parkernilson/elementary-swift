@@ -10,6 +10,7 @@ public final class Runtime {
     /// Processes one block of audio in place, using non-interleaved buffers.
     /// Real-time safe: forwards directly to the underlying C++ call with no
     /// allocation, so this is fine to call from a live audio render callback.
+    /// TODO: Verify this works correctly and is safe
     public func process(
         outputChannelData: UnsafeMutablePointer<UnsafeMutablePointer<Float>?>,
         numChannels: Int,
