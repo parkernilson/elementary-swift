@@ -1,10 +1,20 @@
 internal import ElementaryCore
 
-class GraphNode {
+public enum ElemNode {
+    case num(Double)
+    case node(GraphNode)
+}
+
+public class GraphNode {
     internal var node: ElementaryCore.GraphNodeSPtr
     
     public init(kind: String, params: [String: Value], children: [GraphNode]) {
         self.node = elem.SymbolicGraph.createNode(std.string(kind), params.toCore(), children.toCore())
+    }
+    
+    // TODO: Do I need to do consuming here?
+    internal init(_ node: ElementaryCore.GraphNodeSPtr) {
+        self.node = node
     }
 }
 
