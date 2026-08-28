@@ -39,8 +39,6 @@ let package = Package(
             ],
             publicHeadersPath: "include",
             cxxSettings: [
-                .headerSearchPath("./Vendor/elementary/runtime"),
-                .headerSearchPath("."),
                 .define("SWIFT_BRIDGING_ENABLED", to: "1")
             ],
             linkerSettings: [

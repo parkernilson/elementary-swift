@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Vendor/elementary/runtime/elem/lib/Core.h"
+#include "../Vendor/elementary/runtime/elem/lib/Oscillators.h"
 
 namespace ElementaryCore {
 GraphNodeSPtr constant(const double x) {
