@@ -4,14 +4,14 @@
 
 namespace ElementaryCore {
 GraphNodeSPtr constant(const double x) {
-    return elem::lib::constant(x)
+    return elem::lib::constant(x);
 }
 
 GraphNodeSPtr cycle(double rate) {
-    return elem::lib::cycle(rate)
+    return elem::lib::cycle(rate);
 }
 
 GraphNodeSPtr cycle(GraphNodeSPtr rate) {
-    return elem::lib::cycle(std::move(rate))
+    return elem::lib::cycle(std::move(rate));
 }
 }

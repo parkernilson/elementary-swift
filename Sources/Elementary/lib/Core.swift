@@ -6,6 +6,7 @@ internal import ElementaryCore
 // an internal type
 
 public enum El {
+    
     // TODO: Add optional key param
     public static func constant(_ x: Double) -> GraphNode {
         return GraphNode(ElementaryCore.constant(x))
