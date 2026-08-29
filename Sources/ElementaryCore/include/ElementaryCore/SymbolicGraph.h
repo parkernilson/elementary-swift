@@ -3,6 +3,7 @@
 #include "../Vendor/elementary/runtime/elem/SymbolicGraph.h"
 
 namespace ElementaryCore {
+// TODO: We can probably use NodeRepr here?? Or is this better?
 using GraphNodeSPtr = std::shared_ptr<elem::SymbolicGraphNode>;
 using GraphNodeSPtrVector = std::vector<GraphNodeSPtr>;
 

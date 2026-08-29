@@ -1,8 +1,18 @@
 internal import ElementaryCore
 
-public enum ElemNode {
-    case num(Double)
-    case node(GraphNode)
+/// Anything that can appear as a node function's input: a literal constant or
+/// an existing node. Conforming types resolve themselves to a `GraphNode`, so
+/// call sites can pass `440` or a `GraphNode` interchangeably without wrapping.
+public protocol NodeConvertible {
+    func toNode() -> GraphNode
+}
+
+extension Double: NodeConvertible {
+    public func toNode() -> GraphNode { El.constant(self) }
+}
+
+extension GraphNode: NodeConvertible {
+    public func toNode() -> GraphNode { self }
 }
 
 public class GraphNode {

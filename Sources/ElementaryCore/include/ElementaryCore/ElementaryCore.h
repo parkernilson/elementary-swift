@@ -11,3 +11,4 @@
 #include "ElementaryCore/Renderer.h"
 #include "ElementaryCore/Runtime.h"
 #include "ElementaryCore/lib/Core.h"
+#include "ElementaryCore/lib/NodeUtils.h"
