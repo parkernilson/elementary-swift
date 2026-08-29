@@ -23,6 +23,7 @@ let package = Package(
             path: "Sources/ElementaryCore",
             exclude: [
                 "Vendor/elementary/cli",
+                "Vendor/elementary/cli-native",
                 "Vendor/elementary/js",
                 "Vendor/elementary/scripts",
                 "Vendor/elementary/tests",
