@@ -40,7 +40,14 @@ let package = Package(
             ],
             publicHeadersPath: "include",
             cxxSettings: [
-                .define("SWIFT_BRIDGING_ENABLED", to: "1")
+                .define("SWIFT_BRIDGING_ENABLED", to: "1"),
+                // nlohmann/json's IO-based input adapters (FILE*/std::istream)
+                // use std::streambuf without directly including <streambuf>,
+                // relying on it being pulled in transitively via <istream>.
+                // That holds under plain textual compilation but not under
+                // Swift's modular Clang build of libc++, so disable the IO
+                // path entirely — we only ever parse/dump strings.
+                .define("JSON_NO_IO", to: "1")
             ],
             linkerSettings: [
                 .linkedLibrary("c++")
