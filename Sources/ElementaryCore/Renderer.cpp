@@ -15,7 +15,7 @@ Renderer& Renderer::operator=(const Renderer&& other) {
     return *this;
 }
 
-void Renderer::renderGraph(std::vector<std::shared_ptr<elem::SymbolicGraphNode>> graphs,
+void Renderer::renderGraph(NodeReprSPtrVector graphs,
                            elem::RenderOptions options) {
     return mRenderer->renderGraph(std::move(graphs), std::move(options));
 }

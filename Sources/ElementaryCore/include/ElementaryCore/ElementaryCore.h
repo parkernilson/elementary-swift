@@ -18,8 +18,7 @@
 // cxxSettings defines.
 #define JSON_NO_IO 1
 
-#include "ElementaryCore/NodeRepr.h"
+#include "ElementaryCore/lib/NodeUtils.h"
 #include "ElementaryCore/Renderer.h"
 #include "ElementaryCore/Runtime.h"
 #include "ElementaryCore/lib/Core.h"
-#include "ElementaryCore/lib/NodeUtils.h"

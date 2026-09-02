@@ -2,7 +2,7 @@ internal import ElementaryCore
 
 // TODO: Is this efficient enough? I feel like we are going back and forth between layers,
 // but maybe it is worth it for the expressiveness of the API it gives
-// We should return GraphNode from any public functions, because ElementaryCore.GraphNodeSPtr is
+// We should return NodeRepr from any public functions, because ElementaryCore.NodeReprSPtr is
 // an internal type
 
 /// Swift-native mirror of `ElementaryCore.MaxHoldProps`. The shim's own struct
@@ -30,15 +30,15 @@ internal extension MaxHoldProps {
 public enum El {
 
     // TODO: Add optional key param
-    public static func constant(_ x: Double) -> GraphNode {
-        return GraphNode(ElementaryCore.constant(x))
+    public static func constant(_ x: Double) -> NodeRepr {
+        return NodeRepr(ElementaryCore.constant(x))
     }
 
-    public static func cycle(rate: some NodeConvertible) -> GraphNode {
-        return GraphNode(ElementaryCore.cycle(rate.toNode().node))
+    public static func cycle(rate: some NodeConvertible) -> NodeRepr {
+        return NodeRepr(ElementaryCore.cycle(rate.toNode().node))
     }
 
-    public static func maxhold(_ props: MaxHoldProps = .init(), x: some NodeConvertible, reset: some NodeConvertible) -> GraphNode {
-        return GraphNode(ElementaryCore.maxhold(props.toCore(), x.toNode().node, reset.toNode().node))
+    public static func maxhold(_ props: MaxHoldProps = .init(), x: some NodeConvertible, reset: some NodeConvertible) -> NodeRepr {
+        return NodeRepr(ElementaryCore.maxhold(props.toCore(), x.toNode().node, reset.toNode().node))
     }
 }

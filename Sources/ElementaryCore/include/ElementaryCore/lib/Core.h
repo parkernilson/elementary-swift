@@ -39,7 +39,7 @@ inline MaxHoldProps maxHoldProps(OptString key, OptDouble hold) {
     return MaxHoldProps{std::move(key), std::move(hold)};
 }
 
-NodeRepr maxhold(MaxHoldProps props, NodeReprSPtr x, NodeReprSPtr reset) {
+NodeReprSPtr maxhold(MaxHoldProps props, NodeReprSPtr x, NodeReprSPtr reset) {
     elem::lib::MaxHoldProps coreProps{std::move(props.key), std::move(props.hold)};
     return elem::lib::maxhold(std::move(coreProps), std::move(x), std::move(reset));
 }

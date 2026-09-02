@@ -2,7 +2,7 @@
 
 #include "../Vendor/elementary/runtime/elem/Renderer.h"
 #include "../Vendor/elementary/runtime/elem/Runtime.h"
-#include "../Vendor/elementary/runtime/elem/SymbolicGraph.h"
+#include "lib/NodeUtils.h"
 #include "Runtime.h"
 
 namespace ElementaryCore {
@@ -18,7 +18,7 @@ public:
     Renderer(const Renderer&&);
     Renderer& operator=(const Renderer&&);
     
-    void renderGraph(std::vector<std::shared_ptr<elem::SymbolicGraphNode>> graphs, elem::RenderOptions options);
+    void renderGraph(NodeReprSPtrVector graphs, elem::RenderOptions options);
     
 private:
     std::unique_ptr<elem::Renderer<float>> mRenderer;
