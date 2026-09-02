@@ -13,10 +13,6 @@ NodeReprSPtr constant(const double x) {
     return elem::lib::constant(x);
 }
 
-NodeReprSPtr cycle(double rate) {
-    return elem::lib::cycle(rate);
-}
-
 NodeReprSPtr cycle(NodeReprSPtr rate) {
     return elem::lib::cycle(std::move(rate));
 }

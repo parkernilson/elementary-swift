@@ -16,15 +16,14 @@ extension NodeRepr: NodeConvertible {
 }
 
 public class NodeRepr {
-    internal var node: ElementaryCore.NodeReprSPtr
+    internal var core: ElementaryCore.NodeReprSPtr
     
     public init(kind: String, params: [String: Value], children: [NodeRepr]) {
-        self.node = elem.NodeRepr.createNode(std.string(kind), params.toCore(), children.toCore())
+        self.core = elem.NodeRepr.createNode(std.string(kind), params.toCore(), children.toCore())
     }
     
-    // TODO: Do I need to do consuming here?
     internal init(_ node: ElementaryCore.NodeReprSPtr) {
-        self.node = node
+        self.core = node
     }
 }
 
@@ -32,8 +31,7 @@ internal extension Array where Element == NodeRepr {
     func toCore() -> ElementaryCore.NodeReprSPtrVector {
         var nodes = ElementaryCore.NodeReprSPtrVector()
         for child in self {
-            // TODO: Why does this use an ampersand? Is this correct?
-            ElementaryCore.appendGraphNode(&nodes, child.node)
+            ElementaryCore.appendGraphNode(&nodes, child.core)
         }
         return nodes
     }
