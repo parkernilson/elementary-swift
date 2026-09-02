@@ -26,7 +26,7 @@ class Renderer {
         coreRenderer = ElementaryCore.Renderer(runtime)
     }
     
-    public func renderGraph(graphs: [GraphNode], options: Options) {
+    public func renderGraph(graphs: [NodeRepr], options: Options) {
         return coreRenderer.renderGraph(graphs.toCore(), options.toCore())
     }
 }

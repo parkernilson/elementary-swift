@@ -8,15 +8,15 @@
 #include "../Vendor/elementary/runtime/elem/lib/Oscillators.h"
 
 namespace ElementaryCore {
-NodeRepr constant(const double x) {
+NodeReprSPtr constant(const double x) {
     return elem::lib::constant(x);
 }
 
-NodeRepr cycle(double rate) {
+NodeReprSPtr cycle(double rate) {
     return elem::lib::cycle(rate);
 }
 
-NodeRepr cycle(GraphNodeSPtr rate) {
+NodeReprSPtr cycle(NodeReprSPtr rate) {
     return elem::lib::cycle(std::move(rate));
 }
 
@@ -39,7 +39,7 @@ inline MaxHoldProps maxHoldProps(OptString key, OptDouble hold) {
     return MaxHoldProps{std::move(key), std::move(hold)};
 }
 
-NodeRepr maxhold(MaxHoldProps props, GraphNodeSPtr x, GraphNodeSPtr reset) {
+NodeRepr maxhold(MaxHoldProps props, NodeReprSPtr x, NodeReprSPtr reset) {
     elem::lib::MaxHoldProps coreProps{std::move(props.key), std::move(props.hold)};
     return elem::lib::maxhold(std::move(coreProps), std::move(x), std::move(reset));
 }
