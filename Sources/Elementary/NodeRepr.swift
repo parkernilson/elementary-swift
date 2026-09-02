@@ -1,18 +1,19 @@
 internal import ElementaryCore
 
-/// Anything that can appear as a node function's input: a literal constant or
-/// an existing node. Conforming types resolve themselves to a `NodeRepr`, so
-/// call sites can pass `440.0` or a `NodeRepr` interchangeably without wrapping.
-public protocol NodeConvertible {
-    func toNode() -> NodeRepr
+/// Anything that can appear as an argument typed `ElemNode` on the C++ side: a
+/// literal constant or an existing node. A `Double` crosses as the literal
+/// alternative of the underlying `ElemNode` variant (via `ElemNodeArg`)
+/// instead of being materialized into a `const` `NodeRepr` first.
+public protocol ElemNodeConvertible {
+    func toElemNode() -> ElementaryCore.ElemNodeArg
 }
 
-extension Double: NodeConvertible {
-    public func toNode() -> NodeRepr { El.constant(self) }
+extension Double: ElemNodeConvertible {
+    public func toElemNode() -> ElementaryCore.ElemNodeArg { ElementaryCore.ElemNodeArg(self) }
 }
 
-extension NodeRepr: NodeConvertible {
-    public func toNode() -> NodeRepr { self }
+extension NodeRepr: ElemNodeConvertible {
+    public func toElemNode() -> ElementaryCore.ElemNodeArg { ElementaryCore.ElemNodeArg(core) }
 }
 
 public class NodeRepr {

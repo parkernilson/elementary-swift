@@ -23,11 +23,11 @@ internal extension MaxHoldProps {
 }
 
 public enum El {
-    public static func cycle(rate: some NodeConvertible) -> NodeRepr {
-        return NodeRepr(ElementaryCore.cycle(rate.toNode().core))
+    public static func cycle(rate: some ElemNodeConvertible) -> NodeRepr {
+        return NodeRepr(ElementaryCore.cycle(rate.toElemNode()))
     }
 
-    public static func maxhold(_ props: MaxHoldProps = .init(), x: some NodeConvertible, reset: some NodeConvertible) -> NodeRepr {
-        return NodeRepr(ElementaryCore.maxhold(props.toCore(), x.toNode().core, reset.toNode().core))
+    public static func maxhold(_ props: MaxHoldProps = .init(), x: some ElemNodeConvertible, reset: some ElemNodeConvertible) -> NodeRepr {
+        return NodeRepr(ElementaryCore.maxhold(props.toCore(), x.toElemNode(), reset.toElemNode()))
     }
 }
