@@ -2,7 +2,7 @@
 
 #include "Core.h"
 #include "NodeUtils.h"
-#include "../Vendor/elementary/runtime/elem/lib/Oscillators.h"
+#include "../../../../../Vendor/elementary/runtime/elem/lib/Oscillators.h"
 
 namespace ElementaryCore {
 

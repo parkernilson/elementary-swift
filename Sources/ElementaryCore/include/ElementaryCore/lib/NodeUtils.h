@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Vendor/elementary/runtime/elem/lib/NodeUtils.h"
+#include "../../../../../Vendor/elementary/runtime/elem/lib/NodeUtils.h"
 
 namespace ElementaryCore {
 // TODO: Do we need these?

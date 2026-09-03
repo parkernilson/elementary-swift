@@ -4,8 +4,8 @@
 #include <string>
 
 #include "NodeUtils.h"
-#include "../Vendor/elementary/runtime/elem/lib/Core.h"
-#include "../Vendor/elementary/runtime/elem/lib/Oscillators.h"
+#include "../../../../../Vendor/elementary/runtime/elem/lib/Core.h"
+#include "../../../../../Vendor/elementary/runtime/elem/lib/Oscillators.h"
 
 // TODO: add ::lib to this namespace probably
 namespace ElementaryCore {

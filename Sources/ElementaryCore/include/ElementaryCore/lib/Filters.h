@@ -2,7 +2,7 @@
 
 #include "Core.h"
 #include "NodeUtils.h"
-#include "../Vendor/elementary/runtime/elem/lib/Filters.h"
+#include "../../../../../Vendor/elementary/runtime/elem/lib/Filters.h"
 
 namespace ElementaryCore {
 
