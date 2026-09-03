@@ -48,9 +48,6 @@ internal extension SVFShelfProps {
     }
 }
 
-/// Filters and filter-design helpers: nodes that shape the spectral content
-/// of an input signal, distinct from the delay-line primitives in
-/// Core+Delay.swift.
 public extension El {
     static func pole(p: some ElemNodeConvertible, x: some ElemNodeConvertible) -> NodeRepr {
         return NodeRepr(ElementaryCore.pole(p.toElemNode(), x.toElemNode()))

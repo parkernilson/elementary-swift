@@ -1,21 +1,5 @@
 internal import ElementaryCore
 
-public struct TapProps {
-    public var name: String
-    public var key: String? = nil
-
-    public init(name: String, key: String? = nil) {
-        self.name = name
-        self.key = key
-    }
-}
-
-internal extension TapProps {
-    func toCore() -> ElementaryCore.TapProps {
-        ElementaryCore.tapProps(key.toOptString(), std.string(name))
-    }
-}
-
 public struct MeterProps {
     public var key: String? = nil
     public var name: String? = nil
@@ -101,14 +85,6 @@ internal extension CaptureProps {
 }
 
 public extension El {
-    static func tapIn(_ props: TapProps) -> NodeRepr {
-        NodeRepr(ElementaryCore.tapIn(props.toCore()))
-    }
-
-    static func tapOut(_ props: TapProps, x: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.tapOut(props.toCore(), x.toElemNode()))
-    }
-
     static func meter(_ props: MeterProps = .init(), x: some ElemNodeConvertible) -> NodeRepr {
         NodeRepr(ElementaryCore.meter(props.toCore(), x.toElemNode()))
     }

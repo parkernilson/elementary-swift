@@ -72,9 +72,6 @@ internal extension MetroProps {
     }
 }
 
-/// Generic, stateful building blocks - not tied to a particular signal
-/// domain (filters, sequencing, etc.), the kind of node you reach for while
-/// composing other nodes together.
 public extension El {
     static func counter(gate: some ElemNodeConvertible) -> NodeRepr {
         return NodeRepr(ElementaryCore.counter(gate.toElemNode()))

@@ -76,8 +76,6 @@ internal extension SeqProps {
     }
 }
 
-/// Swift-native mirror of `ElementaryCore.SparSeqStep`, matching the
-/// `{ value: Required<js::Number>, tickTime: Required<js::Number> }` shape.
 public struct SparSeqStep {
     public var value: Double
     public var tickTime: Double
@@ -104,8 +102,6 @@ internal extension Array where Element == SparSeqStep {
     }
 }
 
-/// Anything that can appear as `SparSeqProps.loop`: either a `Bool` or an
-/// array of values, matching the vendor `SparSeqLoop = variant<bool, js::Array>`.
 public protocol SparSeqLoopConvertible {
     func toSparSeqLoopArg() -> ElementaryCore.SparSeqLoopArg
 }
@@ -156,8 +152,6 @@ internal extension SparSeqProps {
     }
 }
 
-/// Swift-native mirror of `ElementaryCore.ValueTimeSeqStep`, matching the
-/// `{ value: Required<js::Number>, time: Required<js::Number> }` shape.
 public struct ValueTimeSeqStep {
     public var value: Double
     public var time: Double

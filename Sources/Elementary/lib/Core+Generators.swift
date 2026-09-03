@@ -1,7 +1,5 @@
 internal import ElementaryCore
 
-/// Pure signal sources: no notion of an input signal to transform, and no
-/// Props struct - each of these originates a new signal from scratch.
 public extension El {
     static func sr() -> NodeRepr {
         return NodeRepr(ElementaryCore.sr())

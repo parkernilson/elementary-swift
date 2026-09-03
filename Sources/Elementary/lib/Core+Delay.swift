@@ -32,8 +32,6 @@ internal extension SDelayProps {
     }
 }
 
-/// Delay-line primitives: pure time-domain buffering, distinct from the
-/// spectral-shaping filters in Core+Filters.swift.
 public extension El {
     static func z(_ x: some ElemNodeConvertible) -> NodeRepr {
         return NodeRepr(ElementaryCore.z(x.toElemNode()))
