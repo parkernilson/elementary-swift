@@ -27,8 +27,6 @@ public:
 
     // TODO: Implement event processing
 
-    // TODO: Implement createRef (or similar feature)
-
     void reset();
 
     // Registers a factory for a custom GraphNode subclass under the given
@@ -38,8 +36,7 @@ public:
     int registerNodeType(std::string const& type, NodeFactoryFn&& fn);
 
 private:
-    friend class Renderer;
+    /// The underlying Elementary runtime. It is hardcoded to float because AVAudioEngine on Apple platforms use Float32
     std::shared_ptr<elem::Runtime<float>> mRuntime;
 };
-
 } // namespace ElementaryCore
