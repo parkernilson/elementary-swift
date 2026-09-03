@@ -5,6 +5,11 @@ public final class Renderer {
         public let fadeInMs: Int32
         public let fadeOutMs: Int32
         
+        public init(fadeInMs: Int32, fadeOutMs: Int32) {
+            self.fadeInMs = fadeInMs
+            self.fadeOutMs = fadeOutMs
+        }
+        
         internal func toCore() -> elem.RenderOptions {
             return elem.RenderOptions(
                 fadeInMs: self.fadeInMs,
@@ -19,7 +24,7 @@ public final class Renderer {
         coreRenderer = elemswift.Renderer(runtime.coreRuntime)
     }
     
-    public func renderGraph(graphs: [NodeRepr], options: Options) {
+    public func renderGraph(graphs: [NodeRepr], options: Options=Options(fadeInMs: 20, fadeOutMs: 20)) {
         coreRenderer.renderGraph(graphs.toCore(), options.toCore())
     }
 }
