@@ -10,7 +10,7 @@ public extension El {
         sidechain: some ElemNodeConvertible,
         xn: some ElemNodeConvertible
     ) -> NodeRepr {
-        return NodeRepr(ElementaryCore.compress(
+        return NodeRepr(elemswift.lib.compress(
             attackMs.toElemNode(), releaseMs.toElemNode(), threshold.toElemNode(),
             ratio.toElemNode(), sidechain.toElemNode(), xn.toElemNode()
         ))
@@ -25,7 +25,7 @@ public extension El {
         sidechain: some ElemNodeConvertible,
         xn: some ElemNodeConvertible
     ) -> NodeRepr {
-        return NodeRepr(ElementaryCore.skcompress(
+        return NodeRepr(elemswift.lib.skcompress(
             attackMs.toElemNode(), releaseMs.toElemNode(), threshold.toElemNode(),
             ratio.toElemNode(), kneeWidth.toElemNode(), sidechain.toElemNode(), xn.toElemNode()
         ))

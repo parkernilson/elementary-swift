@@ -9,7 +9,7 @@ public extension El {
         releaseSec: some ElemNodeConvertible,
         gate: some ElemNodeConvertible
     ) -> NodeRepr {
-        return NodeRepr(ElementaryCore.adsr(
+        return NodeRepr(elemswift.lib.adsr(
             attackSec.toElemNode(), decaySec.toElemNode(), sustain.toElemNode(),
             releaseSec.toElemNode(), gate.toElemNode()
         ))

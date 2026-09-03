@@ -7,13 +7,13 @@ namespace CustomNodes
 
     // A minimal custom GraphNode: applies a constant "gain" property to the
     // first input channel.
-    struct CustomGainNode : public ElementaryCore::GraphNode
+    struct CustomGainNode : public elemswift::GraphNode
     {
-        using ElementaryCore::GraphNode::GraphNode;
+        using elemswift::GraphNode::GraphNode;
 
-        void process(ElementaryCore::BlockContext const& ctx) override
+        void process(elemswift::BlockContext const& ctx) override
         {
-            auto const gain = getPropertyWithDefault<ElementaryCore::Number>("gain", 1.0);
+            auto const gain = getPropertyWithDefault<elemswift::Number>("gain", 1.0);
 
             for (size_t i = 0; i < ctx.numSamples; ++i)
             {

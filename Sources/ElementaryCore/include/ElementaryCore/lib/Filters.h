@@ -4,7 +4,7 @@
 #include "NodeUtils.h"
 #include "../../../../../Vendor/elementary/runtime/elem/lib/Filters.h"
 
-namespace ElementaryCore {
+namespace elemswift::lib {
 
 NodeReprSPtr smooth(ElemNodeArg p, ElemNodeArg x) {
     return elem::lib::smooth(std::move(p.value), std::move(x.value));

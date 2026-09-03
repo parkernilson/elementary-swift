@@ -1,7 +1,7 @@
 #include "ElementaryCore/Renderer.h"
 #include "ElementaryCore/Runtime.h"
 
-namespace ElementaryCore {
+namespace elemswift {
 
 /**
  * Since ElementaryCore::Runtime and ElementaryCore::Renderer are just a lightweight shim layer
@@ -27,7 +27,7 @@ Renderer& Renderer::operator=(const Renderer&& other) {
 
 // TODO: implement createRef
 
-void Renderer::renderGraph(NodeReprSPtrVector graphs,
+void Renderer::renderGraph(lib::NodeReprSPtrVector graphs,
                            elem::RenderOptions options) {
     mRenderer->renderGraph(std::move(graphs), std::move(options));
     

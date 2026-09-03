@@ -4,7 +4,7 @@
 #include "NodeUtils.h"
 #include "../../../../../Vendor/elementary/runtime/elem/lib/Dynamics.h"
 
-namespace ElementaryCore {
+namespace elemswift::lib {
 
 NodeReprSPtr compress(
     ElemNodeArg attackMs,

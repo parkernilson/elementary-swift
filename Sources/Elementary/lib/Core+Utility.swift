@@ -1,6 +1,6 @@
 internal import ElementaryCore
 
-/// Swift-native mirror of `ElementaryCore.MaxHoldProps`. The shim's own struct
+/// Swift-native mirror of `elemswift.lib.MaxHoldProps`. The shim's own struct
 /// exists only because Swift can't import the macro-generated C++ Props type
 /// directly since it contains templated types; this type is what callers actually see and construct.
 public struct MaxHoldProps {
@@ -14,8 +14,8 @@ public struct MaxHoldProps {
 }
 
 internal extension MaxHoldProps {
-    func toCore() -> ElementaryCore.MaxHoldProps {
-        ElementaryCore.maxHoldProps(
+    func toCore() -> elemswift.lib.MaxHoldProps {
+        elemswift.lib.maxHoldProps(
             key.toOptString(),
             hold.toOptDouble()
         )
@@ -33,8 +33,8 @@ public struct OnceProps {
 }
 
 internal extension OnceProps {
-    func toCore() -> ElementaryCore.OnceProps {
-        ElementaryCore.onceProps(key.toOptString(), arm.toOptBool())
+    func toCore() -> elemswift.lib.OnceProps {
+        elemswift.lib.onceProps(key.toOptString(), arm.toOptBool())
     }
 }
 
@@ -49,8 +49,8 @@ public struct RandProps {
 }
 
 internal extension RandProps {
-    func toCore() -> ElementaryCore.RandProps {
-        ElementaryCore.randProps(key.toOptString(), seed.toOptDouble())
+    func toCore() -> elemswift.lib.RandProps {
+        elemswift.lib.randProps(key.toOptString(), seed.toOptDouble())
     }
 }
 
@@ -67,37 +67,37 @@ public struct MetroProps {
 }
 
 internal extension MetroProps {
-    func toCore() -> ElementaryCore.MetroProps {
-        ElementaryCore.metroProps(key.toOptString(), name.toOptString(), interval.toOptDouble())
+    func toCore() -> elemswift.lib.MetroProps {
+        elemswift.lib.metroProps(key.toOptString(), name.toOptString(), interval.toOptDouble())
     }
 }
 
 public extension El {
     static func counter(gate: some ElemNodeConvertible) -> NodeRepr {
-        return NodeRepr(ElementaryCore.counter(gate.toElemNode()))
+        return NodeRepr(elemswift.lib.counter(gate.toElemNode()))
     }
 
     static func accum(xn: some ElemNodeConvertible, reset: some ElemNodeConvertible) -> NodeRepr {
-        return NodeRepr(ElementaryCore.accum(xn.toElemNode(), reset.toElemNode()))
+        return NodeRepr(elemswift.lib.accum(xn.toElemNode(), reset.toElemNode()))
     }
 
     static func latch(t: some ElemNodeConvertible, x: some ElemNodeConvertible) -> NodeRepr {
-        return NodeRepr(ElementaryCore.latch(t.toElemNode(), x.toElemNode()))
+        return NodeRepr(elemswift.lib.latch(t.toElemNode(), x.toElemNode()))
     }
 
     static func maxhold(_ props: MaxHoldProps = .init(), x: some ElemNodeConvertible, reset: some ElemNodeConvertible) -> NodeRepr {
-        return NodeRepr(ElementaryCore.maxhold(props.toCore(), x.toElemNode(), reset.toElemNode()))
+        return NodeRepr(elemswift.lib.maxhold(props.toCore(), x.toElemNode(), reset.toElemNode()))
     }
 
     static func once(_ props: OnceProps = .init(), x: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.once(props.toCore(), x.toElemNode()))
+        NodeRepr(elemswift.lib.once(props.toCore(), x.toElemNode()))
     }
 
     static func rand(_ props: RandProps = .init()) -> NodeRepr {
-        NodeRepr(ElementaryCore.rand(props.toCore()))
+        NodeRepr(elemswift.lib.rand(props.toCore()))
     }
 
     static func metro(_ props: MetroProps = .init()) -> NodeRepr {
-        NodeRepr(ElementaryCore.metro(props.toCore()))
+        NodeRepr(elemswift.lib.metro(props.toCore()))
     }
 }

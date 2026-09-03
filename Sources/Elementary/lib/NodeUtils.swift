@@ -19,24 +19,24 @@ public extension El {
 /// alternative of the underlying `ElemNode` variant (via `ElemNodeArg`)
 /// instead of being materialized into a `const` `NodeRepr` first.
 public protocol ElemNodeConvertible {
-    func toElemNode() -> ElementaryCore.ElemNodeArg
+    func toElemNode() -> elemswift.lib.ElemNodeArg
 }
 
 extension Double: ElemNodeConvertible {
-    public func toElemNode() -> ElementaryCore.ElemNodeArg { ElementaryCore.ElemNodeArg(self) }
+    public func toElemNode() -> elemswift.lib.ElemNodeArg { elemswift.lib.ElemNodeArg(self) }
 }
 
 extension NodeRepr: ElemNodeConvertible {
-    public func toElemNode() -> ElementaryCore.ElemNodeArg { ElementaryCore.ElemNodeArg(core) }
+    public func toElemNode() -> elemswift.lib.ElemNodeArg { elemswift.lib.ElemNodeArg(core) }
 }
 
 internal extension Array where Element: ElemNodeConvertible {
     /// Builds a `std::vector<ElemNodeArg>` for functions like `scope` that
     /// take a variadic list of `ElemNode` children.
-    func toElemNodeArgVector() -> ElementaryCore.ElemNodeArgVector {
-        var vec = ElementaryCore.ElemNodeArgVector()
+    func toElemNodeArgVector() -> elemswift.lib.ElemNodeArgVector {
+        var vec = elemswift.lib.ElemNodeArgVector()
         for child in self {
-            ElementaryCore.appendElemNodeArg(&vec, child.toElemNode())
+            elemswift.lib.appendElemNodeArg(&vec, child.toElemNode())
         }
         return vec
     }

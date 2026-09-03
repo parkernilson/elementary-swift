@@ -1,6 +1,6 @@
 #include "ElementaryCore/Runtime.h"
 
-namespace ElementaryCore {
+namespace elemswift {
 
 Runtime::Runtime(double sampleRate, int blockSize): mRuntime{std::make_shared<elem::Runtime<float>>(sampleRate, blockSize)} {}
 

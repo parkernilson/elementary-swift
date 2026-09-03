@@ -8,10 +8,13 @@ final class AudioPlayer: ObservableObject {
     @Published private(set) var isRunning = false
 
     private let engine = AVAudioEngine()
-    private let runtime: Runtime
+    private let runtime: Elementary.Runtime
+    private let renderer: Elementary.Renderer
 
     init(sampleRate: Double = 44_100, blockSize: Int32 = 4_096) {
-        runtime = Runtime(CustomRuntime.makeElementaryRuntime(sampleRate, blockSize))
+        runtime = Elementary.Runtime(CustomRuntime.makeElementaryRuntime(sampleRate, blockSize))
+        renderer = Elementary.Renderer(runtime)
+
 
         let format = AVAudioFormat(standardFormatWithSampleRate: sampleRate, channels: 2)!
         let sourceNode = AVAudioSourceNode(format: format) { [runtime] _, _, frameCount, audioBufferList in

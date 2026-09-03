@@ -4,7 +4,7 @@
 #include "NodeUtils.h"
 #include "../../../../../Vendor/elementary/runtime/elem/lib/Envelopes.h"
 
-namespace ElementaryCore {
+namespace elemswift::lib {
 
 NodeReprSPtr adsr(
     ElemNodeArg attackSec,

@@ -2,8 +2,7 @@
 
 #include "../../../../../Vendor/elementary/runtime/elem/lib/NodeUtils.h"
 
-namespace ElementaryCore {
-// TODO: Do we need these?
+namespace elemswift::lib {
 using NodeReprSPtr = elem::lib::NodeReprSPtr;
 using NodeReprSPtrVector = std::vector<elem::lib::NodeReprSPtr>;
 using ElemNode = elem::lib::ElemNode;

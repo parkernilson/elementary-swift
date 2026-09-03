@@ -1,14 +1,7 @@
-//
-//  Renderer.swift
-//  Elementary
-//
-//  Created by Parker Nilson on 8/17/26.
-//
-
 internal import ElementaryCore
 
-class Renderer {
-    struct Options {
+public final class Renderer {
+    public struct Options {
         public let fadeInMs: Int32
         public let fadeOutMs: Int32
         
@@ -20,13 +13,13 @@ class Renderer {
         }
     }
     
-    private var coreRenderer: ElementaryCore.Renderer
+    private var coreRenderer: elemswift.Renderer
     
-    public init(runtime: borrowing ElementaryCore.Runtime) {
-        coreRenderer = ElementaryCore.Renderer(runtime)
+    public init(_ runtime: borrowing Elementary.Runtime) {
+        coreRenderer = elemswift.Renderer(runtime.coreRuntime)
     }
     
     public func renderGraph(graphs: [NodeRepr], options: Options) {
-        return coreRenderer.renderGraph(graphs.toCore(), options.toCore())
+        coreRenderer.renderGraph(graphs.toCore(), options.toCore())
     }
 }

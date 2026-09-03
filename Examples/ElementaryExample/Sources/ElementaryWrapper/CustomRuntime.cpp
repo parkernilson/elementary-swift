@@ -4,11 +4,11 @@
 namespace CustomRuntime 
 {
 
-    ElementaryCore::Runtime makeElementaryRuntime(double sampleRate, int blockSize)
+    elemswift::Runtime makeElementaryRuntime(double sampleRate, int blockSize)
     {
-        ElementaryCore::Runtime runtime(sampleRate, blockSize);
+        elemswift::Runtime runtime(sampleRate, blockSize);
 
-        runtime.registerNodeType("customGain", [](ElementaryCore::NodeId const id, double sr, int bs) {
+        runtime.registerNodeType("customGain", [](elemswift::NodeId const id, double sr, int bs) {
             return std::make_shared<CustomNodes::CustomGainNode>(id, sr, static_cast<size_t>(bs));
         });
 

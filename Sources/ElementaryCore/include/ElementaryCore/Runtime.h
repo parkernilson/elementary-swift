@@ -1,14 +1,12 @@
 #pragma once
 
 #include "../../../../Vendor/elementary/runtime/elem/Runtime.h"
-#include "GraphNode.h"
 
 #include <cstddef>
-#include <functional>
 #include <memory>
 #include <string>
 
-namespace ElementaryCore {
+namespace elemswift {
 
 class Runtime {
 public:
@@ -29,7 +27,7 @@ public:
 
     void reset();
 
-    using NodeFactoryFn = std::function<std::shared_ptr<GraphNode>(NodeId const id, double sampleRate, int const blockSize)>;
+    using NodeFactoryFn = elem::Runtime<float>::NodeFactoryFn;
     int registerNodeType(std::string const& type, NodeFactoryFn&& fn);
 
 private:

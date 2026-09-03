@@ -8,7 +8,7 @@
 #include "../../../../../Vendor/elementary/runtime/elem/lib/Oscillators.h"
 
 // TODO: add ::lib to this namespace probably
-namespace ElementaryCore {
+namespace elemswift::lib {
 
 NodeReprSPtr sr() {
     return elem::lib::sr();

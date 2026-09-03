@@ -1,19 +1,19 @@
 internal import ElementaryCore
 
 internal extension String? {
-    func toOptString() -> ElementaryCore.OptString {
-        return self.map { ElementaryCore.OptString(std.string($0)) } ?? ElementaryCore.OptString()
+    func toOptString() -> elemswift.lib.OptString {
+        return self.map { elemswift.lib.OptString(std.string($0)) } ?? elemswift.lib.OptString()
     }
 }
 
 internal extension Double? {
-    func toOptDouble() -> ElementaryCore.OptDouble {
-        return self.map { ElementaryCore.OptDouble($0) } ?? ElementaryCore.OptDouble()
+    func toOptDouble() -> elemswift.lib.OptDouble {
+        return self.map { elemswift.lib.OptDouble($0) } ?? elemswift.lib.OptDouble()
     }
 }
 
 internal extension Bool? {
-    func toOptBool() -> ElementaryCore.OptBool {
-        return self.map { ElementaryCore.OptBool($0) } ?? ElementaryCore.OptBool()
+    func toOptBool() -> elemswift.lib.OptBool {
+        return self.map { elemswift.lib.OptBool($0) } ?? elemswift.lib.OptBool()
     }
 }

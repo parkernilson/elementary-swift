@@ -4,7 +4,7 @@
 #include "NodeUtils.h"
 #include "../../../../../Vendor/elementary/runtime/elem/lib/Oscillators.h"
 
-namespace ElementaryCore {
+namespace elemswift::lib {
 
 NodeReprSPtr train(ElemNodeArg rate) {
     return elem::lib::train(std::move(rate.value));

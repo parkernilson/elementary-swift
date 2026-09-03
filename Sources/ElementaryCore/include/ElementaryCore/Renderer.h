@@ -4,12 +4,12 @@
 #include "lib/NodeUtils.h"
 #include "Runtime.h"
 
-namespace ElementaryCore {
+namespace elemswift {
 
 // TODO: Renderer wrapper
 class Renderer {
 public:
-    explicit Renderer(const ElementaryCore::Runtime& runtime);
+    explicit Renderer(const elemswift::Runtime& runtime);
     ~Renderer();
     
     Renderer(const Renderer&) = delete;
@@ -17,7 +17,7 @@ public:
     Renderer(const Renderer&&);
     Renderer& operator=(const Renderer&&);
     
-    void renderGraph(NodeReprSPtrVector graphs, elem::RenderOptions options);
+    void renderGraph(lib::NodeReprSPtrVector graphs, elem::RenderOptions options);
     
     // TODO: Implement createRef
     

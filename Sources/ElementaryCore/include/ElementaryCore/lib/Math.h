@@ -4,7 +4,7 @@
 #include "NodeUtils.h"
 #include "../../../../../Vendor/elementary/runtime/elem/lib/Math.h"
 
-namespace ElementaryCore {
+namespace elemswift::lib {
 
 struct IdentityProps {
     OptString key;

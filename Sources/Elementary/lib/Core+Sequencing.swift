@@ -17,8 +17,8 @@ public struct SampleProps {
 }
 
 internal extension SampleProps {
-    func toCore() -> ElementaryCore.SampleProps {
-        ElementaryCore.sampleProps(key.toOptString(), std.string(path), mode.toOptString(), startOffset.toOptDouble(), stopOffset.toOptDouble())
+    func toCore() -> elemswift.lib.SampleProps {
+        elemswift.lib.sampleProps(key.toOptString(), std.string(path), mode.toOptString(), startOffset.toOptDouble(), stopOffset.toOptDouble())
     }
 }
 
@@ -33,8 +33,8 @@ public struct TableProps {
 }
 
 internal extension TableProps {
-    func toCore() -> ElementaryCore.TableProps {
-        ElementaryCore.tableProps(key.toOptString(), std.string(path))
+    func toCore() -> elemswift.lib.TableProps {
+        elemswift.lib.tableProps(key.toOptString(), std.string(path))
     }
 }
 
@@ -49,8 +49,8 @@ public struct ConvolveProps {
 }
 
 internal extension ConvolveProps {
-    func toCore() -> ElementaryCore.ConvolveProps {
-        ElementaryCore.convolveProps(key.toOptString(), std.string(path))
+    func toCore() -> elemswift.lib.ConvolveProps {
+        elemswift.lib.convolveProps(key.toOptString(), std.string(path))
     }
 }
 
@@ -71,8 +71,8 @@ public struct SeqProps {
 }
 
 internal extension SeqProps {
-    func toCore() -> ElementaryCore.SeqProps {
-        ElementaryCore.seqProps(key.toOptString(), seq.toCore(), offset.toOptDouble(), hold.toOptBool(), loop.toOptBool())
+    func toCore() -> elemswift.lib.SeqProps {
+        elemswift.lib.seqProps(key.toOptString(), seq.toCore(), offset.toOptDouble(), hold.toOptBool(), loop.toOptBool())
     }
 }
 
@@ -87,14 +87,14 @@ public struct SparSeqStep {
 }
 
 internal extension SparSeqStep {
-    func toCore() -> ElementaryCore.SparSeqStep {
-        ElementaryCore.sparSeqStep(value, tickTime)
+    func toCore() -> elemswift.lib.SparSeqStep {
+        elemswift.lib.sparSeqStep(value, tickTime)
     }
 }
 
 internal extension Array where Element == SparSeqStep {
-    func toCore() -> ElementaryCore.SparSeqStepVector {
-        var vec = ElementaryCore.SparSeqStepVector()
+    func toCore() -> elemswift.lib.SparSeqStepVector {
+        var vec = elemswift.lib.SparSeqStepVector()
         for step in self {
             vec.push_back(step.toCore())
         }
@@ -103,15 +103,15 @@ internal extension Array where Element == SparSeqStep {
 }
 
 public protocol SparSeqLoopConvertible {
-    func toSparSeqLoopArg() -> ElementaryCore.SparSeqLoopArg
+    func toSparSeqLoopArg() -> elemswift.lib.SparSeqLoopArg
 }
 
 extension Bool: SparSeqLoopConvertible {
-    public func toSparSeqLoopArg() -> ElementaryCore.SparSeqLoopArg { .init(self) }
+    public func toSparSeqLoopArg() -> elemswift.lib.SparSeqLoopArg { .init(self) }
 }
 
 extension Array: SparSeqLoopConvertible where Element == Value {
-    public func toSparSeqLoopArg() -> ElementaryCore.SparSeqLoopArg { .init(self.toCore()) }
+    public func toSparSeqLoopArg() -> elemswift.lib.SparSeqLoopArg { .init(self.toCore()) }
 }
 
 public struct SparSeqProps {
@@ -140,12 +140,12 @@ public struct SparSeqProps {
 }
 
 internal extension SparSeqProps {
-    func toCore() -> ElementaryCore.SparSeqProps {
-        ElementaryCore.sparSeqProps(
+    func toCore() -> elemswift.lib.SparSeqProps {
+        elemswift.lib.sparSeqProps(
             key.toOptString(),
             seq.toCore(),
             offset.toOptDouble(),
-            loop.map { ElementaryCore.OptSparSeqLoopArg($0.toSparSeqLoopArg()) } ?? ElementaryCore.OptSparSeqLoopArg(),
+            loop.map { elemswift.lib.OptSparSeqLoopArg($0.toSparSeqLoopArg()) } ?? elemswift.lib.OptSparSeqLoopArg(),
             interpolate.toOptDouble(),
             tickInterval.toOptDouble()
         )
@@ -163,14 +163,14 @@ public struct ValueTimeSeqStep {
 }
 
 internal extension ValueTimeSeqStep {
-    func toCore() -> ElementaryCore.ValueTimeSeqStep {
-        ElementaryCore.valueTimeSeqStep(value, time)
+    func toCore() -> elemswift.lib.ValueTimeSeqStep {
+        elemswift.lib.valueTimeSeqStep(value, time)
     }
 }
 
 internal extension Array where Element == ValueTimeSeqStep {
-    func toCore() -> ElementaryCore.ValueTimeSeqStepVector {
-        var vec = ElementaryCore.ValueTimeSeqStepVector()
+    func toCore() -> elemswift.lib.ValueTimeSeqStepVector {
+        var vec = elemswift.lib.ValueTimeSeqStepVector()
         for step in self {
             vec.push_back(step.toCore())
         }
@@ -189,8 +189,8 @@ public struct SparSeq2Props {
 }
 
 internal extension SparSeq2Props {
-    func toCore() -> ElementaryCore.SparSeq2Props {
-        ElementaryCore.sparSeq2Props(key.toOptString(), seq.toCore())
+    func toCore() -> elemswift.lib.SparSeq2Props {
+        elemswift.lib.sparSeq2Props(key.toOptString(), seq.toCore())
     }
 }
 
@@ -209,8 +209,8 @@ public struct SampleSeqProps {
 }
 
 internal extension SampleSeqProps {
-    func toCore() -> ElementaryCore.SampleSeqProps {
-        ElementaryCore.sampleSeqProps(key.toOptString(), std.string(path), seq.toCore(), duration)
+    func toCore() -> elemswift.lib.SampleSeqProps {
+        elemswift.lib.sampleSeqProps(key.toOptString(), std.string(path), seq.toCore(), duration)
     }
 }
 
@@ -233,45 +233,45 @@ public struct SampleSeq2Props {
 }
 
 internal extension SampleSeq2Props {
-    func toCore() -> ElementaryCore.SampleSeq2Props {
-        ElementaryCore.sampleSeq2Props(key.toOptString(), std.string(path), seq.toCore(), duration, stretch.toOptDouble(), shift.toOptDouble())
+    func toCore() -> elemswift.lib.SampleSeq2Props {
+        elemswift.lib.sampleSeq2Props(key.toOptString(), std.string(path), seq.toCore(), duration, stretch.toOptDouble(), shift.toOptDouble())
     }
 }
 
 public extension El {
     static func sample(_ props: SampleProps, trigger: some ElemNodeConvertible, rate: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.sample(props.toCore(), trigger.toElemNode(), rate.toElemNode()))
+        NodeRepr(elemswift.lib.sample(props.toCore(), trigger.toElemNode(), rate.toElemNode()))
     }
 
     static func table(_ props: TableProps, t: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.table(props.toCore(), t.toElemNode()))
+        NodeRepr(elemswift.lib.table(props.toCore(), t.toElemNode()))
     }
 
     static func convolve(_ props: ConvolveProps, x: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.convolve(props.toCore(), x.toElemNode()))
+        NodeRepr(elemswift.lib.convolve(props.toCore(), x.toElemNode()))
     }
 
     static func seq(_ props: SeqProps, trigger: some ElemNodeConvertible, reset: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.seq(props.toCore(), trigger.toElemNode(), reset.toElemNode()))
+        NodeRepr(elemswift.lib.seq(props.toCore(), trigger.toElemNode(), reset.toElemNode()))
     }
 
     static func seq2(_ props: SeqProps, trigger: some ElemNodeConvertible, reset: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.seq2(props.toCore(), trigger.toElemNode(), reset.toElemNode()))
+        NodeRepr(elemswift.lib.seq2(props.toCore(), trigger.toElemNode(), reset.toElemNode()))
     }
 
     static func sparseq(_ props: SparSeqProps, trigger: some ElemNodeConvertible, reset: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.sparseq(props.toCore(), trigger.toElemNode(), reset.toElemNode()))
+        NodeRepr(elemswift.lib.sparseq(props.toCore(), trigger.toElemNode(), reset.toElemNode()))
     }
 
     static func sparseq2(_ props: SparSeq2Props, time: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.sparseq2(props.toCore(), time.toElemNode()))
+        NodeRepr(elemswift.lib.sparseq2(props.toCore(), time.toElemNode()))
     }
 
     static func sampleseq(_ props: SampleSeqProps, time: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.sampleseq(props.toCore(), time.toElemNode()))
+        NodeRepr(elemswift.lib.sampleseq(props.toCore(), time.toElemNode()))
     }
 
     static func sampleseq2(_ props: SampleSeq2Props, time: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.sampleseq2(props.toCore(), time.toElemNode()))
+        NodeRepr(elemswift.lib.sampleseq2(props.toCore(), time.toElemNode()))
     }
 }

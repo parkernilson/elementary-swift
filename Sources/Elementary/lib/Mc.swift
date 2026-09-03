@@ -5,6 +5,8 @@ internal import ElementaryCore
 /// `NodeRepr` per channel instead of a single node, and is prefixed "mc" to
 /// avoid overloading the single-channel names by Props type alone.
 
+// TODO: I don't know if I like the mc name prefix. Maybe we need a nested enum
+
 public struct MCSampleProps {
     public var path: String
     public var key: String? = nil
@@ -31,8 +33,8 @@ public struct MCSampleProps {
 }
 
 internal extension MCSampleProps {
-    func toCore() -> ElementaryCore.MCSampleProps {
-        ElementaryCore.mcSampleProps(
+    func toCore() -> elemswift.lib.MCSampleProps {
+        elemswift.lib.mcSampleProps(
             key.toOptString(), std.string(path), mode.toOptString(),
             startOffset.toOptDouble(), stopOffset.toOptDouble(), playbackRate.toOptDouble()
         )
@@ -54,8 +56,8 @@ public struct MCSampleSeqProps {
 }
 
 internal extension MCSampleSeqProps {
-    func toCore() -> ElementaryCore.MCSampleSeqProps {
-        ElementaryCore.mcSampleSeqProps(key.toOptString(), std.string(path), seq.toCore(), duration)
+    func toCore() -> elemswift.lib.MCSampleSeqProps {
+        elemswift.lib.mcSampleSeqProps(key.toOptString(), std.string(path), seq.toCore(), duration)
     }
 }
 
@@ -85,8 +87,8 @@ public struct MCSampleSeq2Props {
 }
 
 internal extension MCSampleSeq2Props {
-    func toCore() -> ElementaryCore.MCSampleSeq2Props {
-        ElementaryCore.mcSampleSeq2Props(key.toOptString(), std.string(path), seq.toCore(), duration, stretch.toOptDouble(), shift.toOptDouble())
+    func toCore() -> elemswift.lib.MCSampleSeq2Props {
+        elemswift.lib.mcSampleSeq2Props(key.toOptString(), std.string(path), seq.toCore(), duration, stretch.toOptDouble(), shift.toOptDouble())
     }
 }
 
@@ -101,8 +103,8 @@ public struct MCTableProps {
 }
 
 internal extension MCTableProps {
-    func toCore() -> ElementaryCore.MCTableProps {
-        ElementaryCore.mcTableProps(key.toOptString(), std.string(path))
+    func toCore() -> elemswift.lib.MCTableProps {
+        elemswift.lib.mcTableProps(key.toOptString(), std.string(path))
     }
 }
 
@@ -115,29 +117,29 @@ public struct MCCaptureProps {
 }
 
 internal extension MCCaptureProps {
-    func toCore() -> ElementaryCore.MCCaptureProps {
-        ElementaryCore.mcCaptureProps(name.toOptString())
+    func toCore() -> elemswift.lib.MCCaptureProps {
+        elemswift.lib.mcCaptureProps(name.toOptString())
     }
 }
 
 public extension El {
     static func mcSample(_ props: MCSampleProps, channels: Int, gate: some ElemNodeConvertible) -> [NodeRepr] {
-        return ElementaryCore.mcSample(props.toCore(), Double(channels), gate.toElemNode()).map(NodeRepr.init)
+        return elemswift.lib.mcSample(props.toCore(), Double(channels), gate.toElemNode()).map(NodeRepr.init)
     }
 
     static func mcSampleSeq(_ props: MCSampleSeqProps, channels: Int, time: some ElemNodeConvertible) -> [NodeRepr] {
-        return ElementaryCore.mcSampleSeq(props.toCore(), Double(channels), time.toElemNode()).map(NodeRepr.init)
+        return elemswift.lib.mcSampleSeq(props.toCore(), Double(channels), time.toElemNode()).map(NodeRepr.init)
     }
 
     static func mcSampleSeq2(_ props: MCSampleSeq2Props, channels: Int, time: some ElemNodeConvertible) -> [NodeRepr] {
-        return ElementaryCore.mcSampleSeq2(props.toCore(), Double(channels), time.toElemNode()).map(NodeRepr.init)
+        return elemswift.lib.mcSampleSeq2(props.toCore(), Double(channels), time.toElemNode()).map(NodeRepr.init)
     }
 
     static func mcTable(_ props: MCTableProps, channels: Int, t: some ElemNodeConvertible) -> [NodeRepr] {
-        return ElementaryCore.mcTable(props.toCore(), Double(channels), t.toElemNode()).map(NodeRepr.init)
+        return elemswift.lib.mcTable(props.toCore(), Double(channels), t.toElemNode()).map(NodeRepr.init)
     }
 
     static func mcCapture<T: ElemNodeConvertible>(_ props: MCCaptureProps = .init(), channels: Int, g: some ElemNodeConvertible, args: [T] = []) -> [NodeRepr] {
-        return ElementaryCore.mcCapture(props.toCore(), Double(channels), g.toElemNode(), args.toElemNodeArgVector()).map(NodeRepr.init)
+        return elemswift.lib.mcCapture(props.toCore(), Double(channels), g.toElemNode(), args.toElemNodeArgVector()).map(NodeRepr.init)
     }
 }

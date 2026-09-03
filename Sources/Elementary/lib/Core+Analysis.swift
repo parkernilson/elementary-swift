@@ -11,8 +11,8 @@ public struct MeterProps {
 }
 
 internal extension MeterProps {
-    func toCore() -> ElementaryCore.MeterProps {
-        ElementaryCore.meterProps(key.toOptString(), name.toOptString())
+    func toCore() -> elemswift.lib.MeterProps {
+        elemswift.lib.meterProps(key.toOptString(), name.toOptString())
     }
 }
 
@@ -27,8 +27,8 @@ public struct SnapshotProps {
 }
 
 internal extension SnapshotProps {
-    func toCore() -> ElementaryCore.SnapshotProps {
-        ElementaryCore.snapshotProps(key.toOptString(), name.toOptString())
+    func toCore() -> elemswift.lib.SnapshotProps {
+        elemswift.lib.snapshotProps(key.toOptString(), name.toOptString())
     }
 }
 
@@ -47,8 +47,8 @@ public struct ScopeProps {
 }
 
 internal extension ScopeProps {
-    func toCore() -> ElementaryCore.ScopeProps {
-        ElementaryCore.scopeProps(key.toOptString(), name.toOptString(), size.toOptDouble(), channels.toOptDouble())
+    func toCore() -> elemswift.lib.ScopeProps {
+        elemswift.lib.scopeProps(key.toOptString(), name.toOptString(), size.toOptDouble(), channels.toOptDouble())
     }
 }
 
@@ -65,8 +65,8 @@ public struct FFTProps {
 }
 
 internal extension FFTProps {
-    func toCore() -> ElementaryCore.FFTProps {
-        ElementaryCore.fftProps(key.toOptString(), name.toOptString(), size.toOptDouble())
+    func toCore() -> elemswift.lib.FFTProps {
+        elemswift.lib.fftProps(key.toOptString(), name.toOptString(), size.toOptDouble())
     }
 }
 
@@ -79,29 +79,29 @@ public struct CaptureProps {
 }
 
 internal extension CaptureProps {
-    func toCore() -> ElementaryCore.CaptureProps {
-        ElementaryCore.captureProps(key.toOptString())
+    func toCore() -> elemswift.lib.CaptureProps {
+        elemswift.lib.captureProps(key.toOptString())
     }
 }
 
 public extension El {
     static func meter(_ props: MeterProps = .init(), x: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.meter(props.toCore(), x.toElemNode()))
+        NodeRepr(elemswift.lib.meter(props.toCore(), x.toElemNode()))
     }
 
     static func snapshot(_ props: SnapshotProps = .init(), trigger: some ElemNodeConvertible, x: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.snapshot(props.toCore(), trigger.toElemNode(), x.toElemNode()))
+        NodeRepr(elemswift.lib.snapshot(props.toCore(), trigger.toElemNode(), x.toElemNode()))
     }
 
     static func scope<T: ElemNodeConvertible>(_ props: ScopeProps = .init(), children: [T]) -> NodeRepr {
-        NodeRepr(ElementaryCore.scope(props.toCore(), children.toElemNodeArgVector()))
+        NodeRepr(elemswift.lib.scope(props.toCore(), children.toElemNodeArgVector()))
     }
 
     static func fft(_ props: FFTProps = .init(), x: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.fft(props.toCore(), x.toElemNode()))
+        NodeRepr(elemswift.lib.fft(props.toCore(), x.toElemNode()))
     }
 
     static func capture(_ props: CaptureProps = .init(), g: some ElemNodeConvertible, x: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.capture(props.toCore(), g.toElemNode(), x.toElemNode()))
+        NodeRepr(elemswift.lib.capture(props.toCore(), g.toElemNode(), x.toElemNode()))
     }
 }

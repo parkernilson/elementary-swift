@@ -4,7 +4,7 @@
 #include "NodeUtils.h"
 #include "../../../../../Vendor/elementary/runtime/elem/lib/Mc.h"
 
-namespace ElementaryCore {
+namespace elemswift::lib {
 
 // Multichannel ("mc.*") variants of the single-channel node constructors in
 // Core.h. Each returns one NodeRepr per channel (via unpack) instead of a

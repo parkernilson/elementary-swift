@@ -11,17 +11,17 @@ public struct TapProps {
 }
 
 internal extension TapProps {
-    func toCore() -> ElementaryCore.TapProps {
-        ElementaryCore.tapProps(key.toOptString(), std.string(name))
+    func toCore() -> elemswift.lib.TapProps {
+        elemswift.lib.tapProps(key.toOptString(), std.string(name))
     }
 }
 
 public extension El {
     static func tapIn(_ props: TapProps) -> NodeRepr {
-        NodeRepr(ElementaryCore.tapIn(props.toCore()))
+        NodeRepr(elemswift.lib.tapIn(props.toCore()))
     }
 
     static func tapOut(_ props: TapProps, x: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.tapOut(props.toCore(), x.toElemNode()))
+        NodeRepr(elemswift.lib.tapOut(props.toCore(), x.toElemNode()))
     }
 }

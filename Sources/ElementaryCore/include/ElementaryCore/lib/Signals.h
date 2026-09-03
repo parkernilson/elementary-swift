@@ -4,7 +4,7 @@
 #include "NodeUtils.h"
 #include "../../../../../Vendor/elementary/runtime/elem/lib/Signals.h"
 
-namespace ElementaryCore {
+namespace elemswift::lib {
 
 NodeReprSPtr ms2samps(ElemNodeArg t) {
     return elem::lib::ms2samps(std::move(t.value));

@@ -2,7 +2,7 @@
 
 #include "../../../../Vendor/elementary/runtime/elem/GraphNode.h"
 
-namespace ElementaryCore {
+namespace elemswift {
 
 using NodeId = elem::NodeId;
 using GraphNode = elem::GraphNode<float>;

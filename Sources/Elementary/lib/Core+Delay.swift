@@ -11,8 +11,8 @@ public struct DelayProps {
 }
 
 internal extension DelayProps {
-    func toCore() -> ElementaryCore.DelayProps {
-        ElementaryCore.delayProps(key.toOptString(), size)
+    func toCore() -> elemswift.lib.DelayProps {
+        elemswift.lib.delayProps(key.toOptString(), size)
     }
 }
 
@@ -27,21 +27,21 @@ public struct SDelayProps {
 }
 
 internal extension SDelayProps {
-    func toCore() -> ElementaryCore.SDelayProps {
-        ElementaryCore.sdelayProps(key.toOptString(), size)
+    func toCore() -> elemswift.lib.SDelayProps {
+        elemswift.lib.sdelayProps(key.toOptString(), size)
     }
 }
 
 public extension El {
     static func z(_ x: some ElemNodeConvertible) -> NodeRepr {
-        return NodeRepr(ElementaryCore.z(x.toElemNode()))
+        return NodeRepr(elemswift.lib.z(x.toElemNode()))
     }
 
     static func delay(_ props: DelayProps, len: some ElemNodeConvertible, fb: some ElemNodeConvertible, x: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.delay(props.toCore(), len.toElemNode(), fb.toElemNode(), x.toElemNode()))
+        NodeRepr(elemswift.lib.delay(props.toCore(), len.toElemNode(), fb.toElemNode(), x.toElemNode()))
     }
 
     static func sdelay(_ props: SDelayProps, x: some ElemNodeConvertible) -> NodeRepr {
-        NodeRepr(ElementaryCore.sdelay(props.toCore(), x.toElemNode()))
+        NodeRepr(elemswift.lib.sdelay(props.toCore(), x.toElemNode()))
     }
 }
