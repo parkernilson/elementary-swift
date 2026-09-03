@@ -1,5 +1,5 @@
-# Elementary Swift
-A lightweight Swift wrapper for [Elementary Audio](https://github.com/elemaudio/elementary), a declarative Audio Graph renderer.
+# Elementary Swift (Work In Progress)
+Elementary Swift will be a lightweight Swift language binding for [Elementary Audio](https://github.com/elemaudio/elementary), a declarative Audio Graph renderer.
 
 ## Develop
 Install Submodules
@@ -22,8 +22,6 @@ depends on `ElementarySwift` must also enable it:
   on the depending target.
 - **Xcode**: enable the "C++ and Objective-C Interoperability" build setting
   on the depending target.
-
-Plain `extern "C"`-style consumption (e.g. CocoaPods) is not supported.
 
 ## Examples
 
