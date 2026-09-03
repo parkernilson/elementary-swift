@@ -6,10 +6,7 @@ namespace CustomNodes
 {
 
     // A minimal custom GraphNode: applies a constant "gain" property to the
-    // first input channel. ElementaryCore::Runtime and Renderer are
-    // hard-coded to elem's `float` instantiation, so this node is too —
-    // there's no ElementaryCore::Renderer that could ever render a
-    // different FloatType.
+    // first input channel.
     struct CustomGainNode : public ElementaryCore::GraphNode
     {
         using ElementaryCore::GraphNode::GraphNode;

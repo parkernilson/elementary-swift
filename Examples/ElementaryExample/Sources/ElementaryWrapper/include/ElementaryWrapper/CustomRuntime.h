@@ -2,7 +2,7 @@
 
 #include <ElementaryCore/Runtime.h>
 
-namespace CustomNodes
+namespace CustomRuntime
 {
 
     // Constructs an ElementaryCore::Runtime with this example's custom node

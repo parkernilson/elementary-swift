@@ -1,7 +1,7 @@
-#include "CustomNodes/CustomRuntime.h"
-#include "CustomNodes/CustomGainNode.h"
+#include "ElementaryWrapper/CustomRuntime.h"
+#include "ElementaryWrapper/CustomGainNode.h"
 
-namespace CustomNodes
+namespace CustomRuntime 
 {
 
     ElementaryCore::Runtime makeElementaryRuntime(double sampleRate, int blockSize)
@@ -9,7 +9,7 @@ namespace CustomNodes
         ElementaryCore::Runtime runtime(sampleRate, blockSize);
 
         runtime.registerNodeType("customGain", [](ElementaryCore::NodeId const id, double sr, int bs) {
-            return std::make_shared<CustomGainNode>(id, sr, static_cast<size_t>(bs));
+            return std::make_shared<CustomNodes::CustomGainNode>(id, sr, static_cast<size_t>(bs));
         });
 
         return runtime;

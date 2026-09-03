@@ -11,7 +11,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "CustomNodes",
+            name: "ElementaryWrapper",
             dependencies: [
                 .product(name: "ElementaryCore", package: "elementary-swift"),
             ]
@@ -20,7 +20,7 @@ let package = Package(
             name: "ElementaryExample",
             dependencies: [
                 .product(name: "Elementary", package: "elementary-swift"),
-                "CustomNodes",
+                "ElementaryWrapper",
             ],
             swiftSettings: [
                 .interoperabilityMode(.Cxx)
