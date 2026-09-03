@@ -13,9 +13,12 @@
 // textual compilation but not under Swift's modular Clang build of
 // libc++, so disable the IO path entirely — we only ever parse/dump
 // strings. Must be defined here, before any transitive include of
-// json.hpp, since SwiftPM's module-map precompile step (used to expose
-// this target's headers to Swift) does not inherit this target's
-// cxxSettings defines.
+// json.hpp: module.modulemap declares this file as an `umbrella header`,
+// which makes it the module's one real parse entry point — every sibling
+// header (Runtime.h, Renderer.h, ...) that also reaches json.hpp is still
+// attributed to this same module rather than re-parsed into a second,
+// independent copy wherever else it's `#include`d, so defining this once
+// here is sufficient.
 #define JSON_NO_IO 1
 
 #include "ElementaryCore/lib/NodeUtils.h"

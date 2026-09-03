@@ -1,5 +1,5 @@
 module ElementaryCore {
-    header "ElementaryCore/ElementaryCore.h"
+    umbrella header "ElementaryCore/ElementaryCore.h"
     requires cplusplus
     export *
 }
