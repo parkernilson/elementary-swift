@@ -16,8 +16,8 @@ public struct MaxHoldProps {
 internal extension MaxHoldProps {
     func toCore() -> ElementaryCore.MaxHoldProps {
         ElementaryCore.maxHoldProps(
-            key.map { ElementaryCore.OptString(std.string($0)) } ?? ElementaryCore.OptString(),
-            hold.map { ElementaryCore.OptDouble($0) } ?? ElementaryCore.OptDouble()
+            key.toOptString(),
+            hold.toOptDouble()
         )
     }
 }

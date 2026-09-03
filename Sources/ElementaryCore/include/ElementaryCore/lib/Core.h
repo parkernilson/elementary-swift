@@ -9,23 +9,10 @@
 
 // TODO: add ::lib to this namespace probably
 namespace ElementaryCore {
-NodeReprSPtr constant(const double x) {
-    return elem::lib::constant(x);
-}
 
 NodeReprSPtr cycle(ElemNodeArg rate) {
     return elem::lib::cycle(std::move(rate.value));
 }
-
-// Swift can't import elem::lib::MaxHoldProps directly: its optional fields are
-// declared inline by the DEFINE_PROPS_STRUCT macro (no named specialization for
-// Swift's importer to latch onto), and it relies on a consuming takeJsObject()
-// that isn't idiomatic to expose to Swift. So the shim re-declares the same
-// fields behind named std::optional aliases, which Swift *can* construct
-// (`OptString(std.string("x"))` / `OptString()` for nil), and converts to the
-// real elem::lib type at the call boundary.
-using OptString = std::optional<std::string>;
-using OptDouble = std::optional<double>;
 
 struct MaxHoldProps {
     OptString key;

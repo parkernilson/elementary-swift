@@ -19,6 +19,9 @@ struct ElemNodeArg {
     ElemNodeArg(NodeReprSPtr x) : value(std::move(x)) {}
 };
 
+using OptString = std::optional<std::string>;
+using OptDouble = std::optional<double>;
+
 // Swift's C++ interop always resolves std::vector<T>::push_back to the
 // const-reference overload, which requires T to be copyable. SymbolicGraphNode
 // is move-only, so Swift can't call push_back on GraphNodeVector directly.

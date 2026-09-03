@@ -1,21 +1,5 @@
 internal import ElementaryCore
 
-/// Anything that can appear as an argument typed `ElemNode` on the C++ side: a
-/// literal constant or an existing node. A `Double` crosses as the literal
-/// alternative of the underlying `ElemNode` variant (via `ElemNodeArg`)
-/// instead of being materialized into a `const` `NodeRepr` first.
-public protocol ElemNodeConvertible {
-    func toElemNode() -> ElementaryCore.ElemNodeArg
-}
-
-extension Double: ElemNodeConvertible {
-    public func toElemNode() -> ElementaryCore.ElemNodeArg { ElementaryCore.ElemNodeArg(self) }
-}
-
-extension NodeRepr: ElemNodeConvertible {
-    public func toElemNode() -> ElementaryCore.ElemNodeArg { ElementaryCore.ElemNodeArg(core) }
-}
-
 public class NodeRepr {
     internal var core: ElementaryCore.NodeReprSPtr
     
@@ -37,3 +21,4 @@ internal extension Array where Element == NodeRepr {
         return nodes
     }
 }
+
