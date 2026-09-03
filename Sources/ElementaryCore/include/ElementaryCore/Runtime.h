@@ -29,9 +29,6 @@ public:
 
     void reset();
 
-    // Registers a factory for a custom GraphNode subclass under the given
-    // node type name, so that graphs rendered on this Runtime may
-    // reference it. Must be called before rendering a graph that uses `type`.
     using NodeFactoryFn = std::function<std::shared_ptr<GraphNode>(NodeId const id, double sampleRate, int const blockSize)>;
     int registerNodeType(std::string const& type, NodeFactoryFn&& fn);
 
