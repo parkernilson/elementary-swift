@@ -17,7 +17,9 @@ Renderer& Renderer::operator=(const Renderer&& other) {
 
 void Renderer::renderGraph(NodeReprSPtrVector graphs,
                            elem::RenderOptions options) {
-    return mRenderer->renderGraph(std::move(graphs), std::move(options));
+    mRenderer->renderGraph(std::move(graphs), std::move(options));
+    
+    // TODO: Should we return RenderStats?
 }
 
 } // namespace ElementaryCore

@@ -33,6 +33,9 @@ public:
     int registerNodeType(std::string const& type, NodeFactoryFn&& fn);
 
 private:
+    // TODO: Is there a way to do this without using a friend class? I feel like friend class is probably the right approach,
+    // but it's worth thinking about.
+    friend class Renderer;
     /// The underlying Elementary runtime. It is hardcoded to float because AVAudioEngine on Apple platforms use Float32
     std::shared_ptr<elem::Runtime<float>> mRuntime;
 };

@@ -10,9 +10,6 @@ let package = Package(
         .package(path: "../..")
     ],
     targets: [
-        // Custom ElementaryCore::GraphNode implementations, plus the wiring
-        // (makeElementaryRuntime) that registers them onto an
-        // ElementaryCore::Runtime.
         .target(
             name: "CustomNodes",
             dependencies: [

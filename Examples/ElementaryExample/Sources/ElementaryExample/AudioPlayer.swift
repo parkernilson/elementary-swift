@@ -1,5 +1,6 @@
 import AVFoundation
 import Elementary
+import CustomNodes
 
 /// Owns the `AVAudioEngine`/`Runtime` pair and wires a real-time
 /// `AVAudioSourceNode` render callback directly into `Runtime.process`.
@@ -10,7 +11,7 @@ final class AudioPlayer: ObservableObject {
     private let runtime: Runtime
 
     init(sampleRate: Double = 44_100, blockSize: Int32 = 4_096) {
-        runtime = Runtime(sampleRate: sampleRate, blockSize: blockSize)
+        runtime = Runtime(CustomNodes.makeElementaryRuntime(sampleRate, blockSize))
 
         let format = AVAudioFormat(standardFormatWithSampleRate: sampleRate, channels: 2)!
         let sourceNode = AVAudioSourceNode(format: format) { [runtime] _, _, frameCount, audioBufferList in

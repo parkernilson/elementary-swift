@@ -7,6 +7,15 @@ public final class Runtime {
         coreRuntime = ElementaryCore.Runtime(sampleRate, blockSize)
     }
 
+    /**
+     * Construct this runtime from a custom runtime.
+     * This can be used to set up the runtime with c++ methods like
+     * custom nodes, etc. and then construct a Swift Runtime
+     */
+    public init(_ runtime: consuming ElementaryCore.Runtime) {
+        coreRuntime = runtime
+    }
+
     /// Processes one block of audio in place, using non-interleaved buffers.
     /// Real-time safe: forwards directly to the underlying C++ call with no
     /// allocation, so this is fine to call from a live audio render callback.
