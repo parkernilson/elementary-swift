@@ -24,4 +24,8 @@ void Runtime::reset() {
     mRuntime.reset();
 }
 
+int Runtime::registerNodeType(std::string const& type, NodeFactoryFn&& fn) {
+    return mRuntime->registerNodeType(type, std::move(fn));
+}
+
 } // namespace ElementaryCore

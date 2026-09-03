@@ -19,6 +19,7 @@
 #define JSON_NO_IO 1
 
 #include "ElementaryCore/lib/NodeUtils.h"
+#include "ElementaryCore/GraphNode.h"
 #include "ElementaryCore/Renderer.h"
 #include "ElementaryCore/Runtime.h"
 #include "ElementaryCore/lib/Core.h"

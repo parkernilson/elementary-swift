@@ -10,13 +10,13 @@ let package = Package(
         .package(path: "../..")
     ],
     targets: [
-        // Custom elem::GraphNode implementations, written directly against
-        // the vendored elementary runtime headers exposed by the
-        // ElementaryRuntime product.
+        // Custom ElementaryCore::GraphNode implementations, plus the wiring
+        // (makeElementaryRuntime) that registers them onto an
+        // ElementaryCore::Runtime.
         .target(
             name: "CustomNodes",
             dependencies: [
-                .product(name: "ElementaryRuntime", package: "elementary-swift"),
+                .product(name: "ElementaryCore", package: "elementary-swift"),
             ]
         ),
         .executableTarget(
