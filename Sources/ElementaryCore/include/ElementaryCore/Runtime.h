@@ -6,8 +6,6 @@
 #include <memory>
 #include <string>
 
-// TODO: We should use PIMPL pattern to hide all the internal elem headers from the ElementaryCore public interface
-
 namespace elemswift {
 
 class Runtime {

@@ -15,7 +15,6 @@ final class AudioPlayer: ObservableObject {
         runtime = Elementary.Runtime(CustomRuntime.makeElementaryRuntime(sampleRate, blockSize))
         renderer = Elementary.Renderer(runtime)
 
-
         let format = AVAudioFormat(standardFormatWithSampleRate: sampleRate, channels: 2)!
         let sourceNode = AVAudioSourceNode(format: format) { [runtime] _, _, frameCount, audioBufferList in
             let abl = UnsafeMutableAudioBufferListPointer(audioBufferList)
