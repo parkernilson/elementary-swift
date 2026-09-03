@@ -9,7 +9,7 @@ namespace ElementaryCore {
 // TODO: Renderer wrapper
 class Renderer {
 public:
-    Renderer(const ElementaryCore::Runtime& runtime);
+    explicit Renderer(const ElementaryCore::Runtime& runtime);
     ~Renderer();
     
     Renderer(const Renderer&) = delete;
