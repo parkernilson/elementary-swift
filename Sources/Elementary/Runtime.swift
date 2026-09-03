@@ -7,16 +7,10 @@ public final class Runtime {
         coreRuntime = elemswift.Runtime(sampleRate, blockSize)
     }
 
-    // TODO: Is it okay to expose this publicly? Does the importer have to 
-    // depend on the ElementaryCore package explicitly to construct
-    // ElementaryCore.Runtime?
-    // This constructor should only be used when they import ElementaryCore
-    // and use it to add custom node types
-    // We could probably add a registerCustomNode method on the swift Runtime
-    // and make it so that an app can have its own c++ layer where it imports
-    // ElementaryCore.GraphNode (or even elem::GraphNode) and then pass their
-    // custom node to it.
-    // That way we wouldn't have to expose internal types on the public interface
+    
+    // TODO: Callers can only call this if they import ElementaryCore to be able
+    // to have an elemswift.Runtime to call it with, so I think because of that
+    // it's okay to have this in the public interface
     /**
      * Construct this runtime from a custom runtime.
      * This can be used to set up the runtime with c++ methods like
