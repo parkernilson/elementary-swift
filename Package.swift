@@ -15,7 +15,7 @@ let package = Package(
         ),
     ],
     targets: [
-        // C++ shim: hand-written, non-template wrapper around elem::Runtime<float>.
+        // C++ shim: hand-written, non-template wrapper around elementary.
         // Swift's C++ importer needs a concrete API surface since it can't
         // import C++ class templates directly.
         .target(

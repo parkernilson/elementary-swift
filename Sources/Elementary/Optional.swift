@@ -11,3 +11,9 @@ internal extension Double? {
         return self.map { ElementaryCore.OptDouble($0) } ?? ElementaryCore.OptDouble()
     }
 }
+
+internal extension Bool? {
+    func toOptBool() -> ElementaryCore.OptBool {
+        return self.map { ElementaryCore.OptBool($0) } ?? ElementaryCore.OptBool()
+    }
+}

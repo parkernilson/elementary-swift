@@ -21,6 +21,7 @@ struct ElemNodeArg {
 
 using OptString = std::optional<std::string>;
 using OptDouble = std::optional<double>;
+using OptBool = std::optional<bool>;
 
 // Swift's C++ interop always resolves std::vector<T>::push_back to the
 // const-reference overload, which requires T to be copyable. SymbolicGraphNode
@@ -28,6 +29,15 @@ using OptDouble = std::optional<double>;
 // Taking the node by value here forces a move from the caller's temporary via
 // a single, unambiguous overload that Swift can call.
 inline void appendGraphNode(NodeReprSPtrVector &vec, NodeReprSPtr node) {
+    vec.push_back(std::move(node));
+}
+
+using ElemNodeArgVector = std::vector<ElemNodeArg>;
+
+// Same workaround as appendGraphNode above, applied to a vector of ElemNodeArg
+// (needed by functions like `scope` that take a variadic list of ElemNode
+// children).
+inline void appendElemNodeArg(ElemNodeArgVector &vec, ElemNodeArg node) {
     vec.push_back(std::move(node));
 }
 }

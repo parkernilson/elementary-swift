@@ -1,5 +1,9 @@
 internal import ElementaryCore
 
+/// Namespace for all node-constructor functions ported from the vendor
+/// `elem::lib` C++ namespace, split across `Core+*.swift` files by DSP domain.
+public enum El {}
+
 public extension El {
     static func constant(_ x: Double, key: String?) -> NodeRepr {
         return NodeRepr(elem.lib.constant(x, key.toOptString()))
@@ -24,4 +28,16 @@ extension Double: ElemNodeConvertible {
 
 extension NodeRepr: ElemNodeConvertible {
     public func toElemNode() -> ElementaryCore.ElemNodeArg { ElementaryCore.ElemNodeArg(core) }
+}
+
+internal extension Array where Element: ElemNodeConvertible {
+    /// Builds a `std::vector<ElemNodeArg>` for functions like `scope` that
+    /// take a variadic list of `ElemNode` children.
+    func toElemNodeArgVector() -> ElementaryCore.ElemNodeArgVector {
+        var vec = ElementaryCore.ElemNodeArgVector()
+        for child in self {
+            ElementaryCore.appendElemNodeArg(&vec, child.toElemNode())
+        }
+        return vec
+    }
 }
