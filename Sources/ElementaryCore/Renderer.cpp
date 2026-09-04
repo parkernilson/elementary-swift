@@ -25,13 +25,15 @@ Renderer& Renderer::operator=(const Renderer&& other) {
     return *this;
 }
 
-// TODO: implement createRef
-
 void Renderer::renderGraph(lib::NodeReprSPtrVector graphs,
                            elem::RenderOptions options) {
     mRenderer->renderGraph(std::move(graphs), std::move(options));
     
     // TODO: Return RenderStats
+}
+
+NodeRef Renderer::createRef(std::string kind, elem::js::Object props, lib::NodeReprSPtrVector children) {
+    return mRenderer->createRef(std::move(kind), std::move(props), std::move(children));
 }
 
 } // namespace ElementaryCore

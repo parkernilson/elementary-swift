@@ -27,4 +27,13 @@ public final class Renderer {
     public func renderGraph(graphs: [NodeRepr], options: Options=Options(fadeInMs: 20, fadeOutMs: 20)) {
         coreRenderer.renderGraph(graphs.toCore(), options.toCore())
     }
+    
+    // TODO: Add RenderResult return value to setter
+    public func createRef(kind: String, props: [String: Value], children: [NodeRepr]) -> (NodeRepr, ([String: Value]) -> Void) {
+        let ref = coreRenderer.createRef(std.string(kind), props.toCore(), children.toCore())
+        let setter = ref.setter
+        return (NodeRepr(ref.node), { newProps in
+            setter(newProps.toCore())
+        })
+    }
 }
