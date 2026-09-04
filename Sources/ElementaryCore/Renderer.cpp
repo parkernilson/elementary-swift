@@ -25,11 +25,9 @@ Renderer& Renderer::operator=(const Renderer&& other) {
     return *this;
 }
 
-void Renderer::renderGraph(lib::NodeReprSPtrVector graphs,
+elem::RenderResult Renderer::renderGraph(lib::NodeReprSPtrVector graphs,
                            elem::RenderOptions options) {
-    mRenderer->renderGraph(std::move(graphs), std::move(options));
-    
-    // TODO: Return RenderStats
+    return mRenderer->renderGraph(std::move(graphs), std::move(options));
 }
 
 NodeRef Renderer::createRef(std::string kind, elem::js::Object props, lib::NodeReprSPtrVector children) {

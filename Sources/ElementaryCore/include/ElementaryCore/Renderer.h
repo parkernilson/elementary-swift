@@ -7,6 +7,7 @@
 namespace elemswift {
 
 using NodeRef = elem::NodeRef;
+using RenderResult = elem::RenderResult;
 
 class Renderer {
 public:
@@ -18,7 +19,7 @@ public:
     Renderer(const Renderer&&);
     Renderer& operator=(const Renderer&&);
     
-    void renderGraph(lib::NodeReprSPtrVector graphs, elem::RenderOptions options);
+    RenderResult renderGraph(lib::NodeReprSPtrVector graphs, elem::RenderOptions options);
     
     NodeRef createRef(std::string kind, elem::js::Object props, lib::NodeReprSPtrVector children);
     
