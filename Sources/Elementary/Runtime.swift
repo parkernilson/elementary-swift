@@ -55,6 +55,9 @@ public final class Runtime {
     }
 
     /// Removes shared resources that are no longer referenced by any active graph node.
+    ///
+    /// Must be called from the same non-realtime thread that drives graph mutation/rendering,
+    /// since the underlying shared resource map is not synchronized.
     public func pruneSharedResources() {
         coreRuntime.pruneSharedResources()
     }

@@ -37,4 +37,17 @@ final class AudioFileResourceTests: XCTestCase {
             }
         }
     }
+
+    func testAddAudioResourceThrowsUnsupportedFormatForZeroLengthFile() {
+        let runtime = Runtime(sampleRate: 44100, blockSize: 512)
+        let zeroLengthURL = Bundle.module.url(
+            forResource: "zero-length", withExtension: "wav", subdirectory: "Fixtures"
+        )!
+
+        XCTAssertThrowsError(try runtime.addAudioResource(name: "empty", fileURL: zeroLengthURL)) { error in
+            guard case AudioResourceError.unsupportedFormat = error else {
+                return XCTFail("Expected unsupportedFormat, got \(error)")
+            }
+        }
+    }
 }

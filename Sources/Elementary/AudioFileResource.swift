@@ -2,10 +2,71 @@ import AVFoundation
 internal import ElementaryCore
 
 /// Errors thrown while loading an audio file into a shared resource.
-public enum AudioResourceError: Error, Equatable {
-    case unreadableFile(underlying: NSError)
+public enum AudioResourceError: Error {
+    case unreadableFile(underlying: Error)
     case unsupportedFormat
     case duplicateName(String)
+}
+
+/// Decodes an audio file from disk into an `elem.AudioBufferResource`, without registering it
+/// with any runtime. Used internally by `Runtime.addAudioResource(name:fileURL:)`.
+internal func decodeAudioBufferResource(fileURL: URL) throws -> elem.AudioBufferResource {
+    let file: AVAudioFile
+    do {
+        file = try AVAudioFile(forReading: fileURL)
+    } catch {
+        throw AudioResourceError.unreadableFile(underlying: error)
+    }
+
+    guard file.length > 0 else {
+        throw AudioResourceError.unsupportedFormat
+    }
+
+    guard let buffer = AVAudioPCMBuffer(
+        pcmFormat: file.processingFormat,
+        frameCapacity: AVAudioFrameCount(file.length)
+    ) else {
+        throw AudioResourceError.unsupportedFormat
+    }
+
+    do {
+        // `AVAudioFile.read(into:)` is not contractually guaranteed to fill the buffer to
+        // `frameCapacity` in a single call (this matters for compressed formats, where a
+        // single internal packet may decode to fewer frames than requested). Keep reading
+        // until the buffer is full or a read returns no additional frames (EOF reached
+        // early), in which case we just use however many frames were actually read.
+        while buffer.frameLength < buffer.frameCapacity {
+            let frameLengthBeforeRead = buffer.frameLength
+            try file.read(into: buffer)
+            if buffer.frameLength == frameLengthBeforeRead {
+                break
+            }
+        }
+    } catch {
+        throw AudioResourceError.unreadableFile(underlying: error)
+    }
+
+    guard let channelData = buffer.floatChannelData else {
+        throw AudioResourceError.unsupportedFormat
+    }
+
+    // `elem.AudioBufferResource`'s C++ `float**` constructor imports into Swift as
+    // `UnsafeMutablePointer<UnsafeMutablePointer<Float>?>` (the C importer adds
+    // Optional to the pointee of a pointer-to-pointer), whereas
+    // `AVAudioPCMBuffer.floatChannelData` bridges as
+    // `UnsafeMutablePointer<UnsafeMutablePointer<Float>>?` (only the outer pointer is
+    // optional). Rebuild an array of optional inner pointers so the shapes line up.
+    let numChannels = Int(buffer.format.channelCount)
+    var channelPointers: [UnsafeMutablePointer<Float>?] =
+        (0..<numChannels).map { channelData[$0] }
+
+    return channelPointers.withUnsafeMutableBufferPointer { pointer in
+        elem.AudioBufferResource(
+            pointer.baseAddress,
+            numChannels,
+            Int(buffer.frameLength)
+        )
+    }
 }
 
 extension Runtime {
@@ -16,49 +77,12 @@ extension Runtime {
     /// `.mp3`, etc. work the same way with no additional code). The resulting buffer is at
     /// the file's native sample rate — there is no automatic resampling to the runtime's
     /// sample rate.
+    ///
+    /// Must be called from the same non-realtime thread that drives graph mutation/rendering,
+    /// since the underlying shared resource map is not synchronized.
     @discardableResult
     public func addAudioResource(name: String, fileURL: URL) throws -> Bool {
-        let file: AVAudioFile
-        do {
-            file = try AVAudioFile(forReading: fileURL)
-        } catch {
-            throw AudioResourceError.unreadableFile(underlying: error as NSError)
-        }
-
-        guard let buffer = AVAudioPCMBuffer(
-            pcmFormat: file.processingFormat,
-            frameCapacity: AVAudioFrameCount(file.length)
-        ) else {
-            throw AudioResourceError.unsupportedFormat
-        }
-
-        do {
-            try file.read(into: buffer)
-        } catch {
-            throw AudioResourceError.unreadableFile(underlying: error as NSError)
-        }
-
-        guard let channelData = buffer.floatChannelData else {
-            throw AudioResourceError.unsupportedFormat
-        }
-
-        // `elem.AudioBufferResource`'s C++ `float**` constructor imports into Swift as
-        // `UnsafeMutablePointer<UnsafeMutablePointer<Float>?>` (the C importer adds
-        // Optional to the pointee of a pointer-to-pointer), whereas
-        // `AVAudioPCMBuffer.floatChannelData` bridges as
-        // `UnsafeMutablePointer<UnsafeMutablePointer<Float>>?` (only the outer pointer is
-        // optional). Rebuild an array of optional inner pointers so the shapes line up.
-        let numChannels = Int(buffer.format.channelCount)
-        var channelPointers: [UnsafeMutablePointer<Float>?] =
-            (0..<numChannels).map { channelData[$0] }
-
-        let resource = channelPointers.withUnsafeMutableBufferPointer { pointer in
-            elem.AudioBufferResource(
-                pointer.baseAddress,
-                numChannels,
-                Int(buffer.frameLength)
-            )
-        }
+        let resource = try decodeAudioBufferResource(fileURL: fileURL)
 
         guard addSharedResource(name: name, resource: resource) else {
             throw AudioResourceError.duplicateName(name)
