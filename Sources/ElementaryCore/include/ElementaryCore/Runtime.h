@@ -2,6 +2,7 @@
 
 #include "../../../../Vendor/elementary/runtime/elem/Runtime.h"
 #include "../../../../Vendor/elementary/runtime/elem/Value.h"
+#include "GraphNode.h"
 
 #include <cstddef>
 #include <memory>
@@ -35,8 +36,11 @@ public:
     using NodeFactoryFn = elem::Runtime<float>::NodeFactoryFn;
     int registerNodeType(std::string const& type, NodeFactoryFn&& fn);
     
-    // TODO: Implement gc
-    
+    // Releases unused graph nodes, returning the ids of the nodes that were cleared.
+    // std::set doesn't support for-in on this deployment target, so this hands
+    // back a std::vector instead, which Swift can iterate.
+    std::vector<NodeId> gc();
+
     // TODO: Implement shared resources
     
 private:

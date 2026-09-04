@@ -32,4 +32,9 @@ int Runtime::registerNodeType(std::string const& type, NodeFactoryFn&& fn) {
     return mRuntime->registerNodeType(type, std::move(fn));
 }
 
+std::vector<elem::NodeId> Runtime::gc() {
+    auto const removed = mRuntime->gc();
+    return std::vector<elem::NodeId>(removed.begin(), removed.end());
+}
+
 } // namespace ElementaryCore

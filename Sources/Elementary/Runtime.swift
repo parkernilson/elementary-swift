@@ -37,4 +37,10 @@ public final class Runtime {
             eventCallback(String(eventName), Value(fromCore: eventPayload))
         })
     }
+
+    /// Releases unused graph nodes, returning the ids of the nodes that were cleared.
+    @discardableResult
+    public func gc() -> [Int32] {
+        Array(coreRuntime.gc())
+    }
 }
