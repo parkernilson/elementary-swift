@@ -60,6 +60,9 @@ let package = Package(
             name: "ElementaryTests",
             dependencies: ["Elementary", "ElementaryCore"],
             path: "Tests/ElementaryTests",
+            resources: [
+                .copy("Fixtures"),
+            ],
             swiftSettings: [
                 .interoperabilityMode(.Cxx),
             ]
