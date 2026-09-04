@@ -4,9 +4,9 @@
 namespace elemswift {
 
 /**
- * Since ElementaryCore::Runtime and ElementaryCore::Renderer are just a lightweight shim layer
- * around the underlying elem::Runtime<FloatType> and elem::Renderer<FloatType> so that we can expose
- * their methods and constructors with Swift friendly types.
+ * ElementaryCore::Renderer is just a lightweight shim layer around the underlying
+ * elem::Renderer<FloatType> so that we can expose its methods and constructors with 
+ * Swift friendly types.
  * 
  * We use friend class status to grab a shared_ptr to `runtime.mRuntime` So that we can wire
  * up the underlying `elem::Renderer` directly to `elem::Runtime`.

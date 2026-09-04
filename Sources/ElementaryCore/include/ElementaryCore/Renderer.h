@@ -6,7 +6,6 @@
 
 namespace elemswift {
 
-// TODO: Renderer wrapper
 class Renderer {
 public:
     explicit Renderer(const elemswift::Runtime& runtime);
