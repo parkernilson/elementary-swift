@@ -58,7 +58,7 @@ let package = Package(
         ),
         .testTarget(
             name: "ElementaryTests",
-            dependencies: ["Elementary"],
+            dependencies: ["Elementary", "ElementaryCore"],
             path: "Tests/ElementaryTests",
             swiftSettings: [
                 .interoperabilityMode(.Cxx),
