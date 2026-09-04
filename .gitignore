@@ -7,3 +7,6 @@ xcuserdata/
 DerivedData/
 Packages/
 *.resolved
+.vscode/
+build/
+compile_commands.json
