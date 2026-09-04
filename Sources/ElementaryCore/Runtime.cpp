@@ -20,7 +20,9 @@ void Runtime::process(
         numSamples, nullptr);
 }
 
-// TODO: Implement event processing
+void Runtime::processQueuedEvents(ProcessEventsCallbackFn evtCallback) {
+    mRuntime->processQueuedEvents(std::move(evtCallback));
+}
 
 void Runtime::reset() {
     mRuntime.reset();

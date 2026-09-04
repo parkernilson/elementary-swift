@@ -45,6 +45,31 @@ extension Value: ExpressibleByDictionaryLiteral {
 }
 
 internal extension Value {
+    init(fromCore core: elem.js.Value) {
+        // TODO: Optimization, is it possible to store a reference to the underlying type
+        // instead of copying in?
+        
+        if core.isNull() {
+            self = .null
+        } else if core.isBool() {
+            self = .bool(elemswift.jsValueGetBool(core))
+        } else if core.isNumber() {
+            self = .number(elemswift.jsValueGetNumber(core))
+        } else if core.isString() {
+            self = .string(String(elemswift.jsValueGetString(core)))
+        } else if core.isArray() {
+            self = .array(elemswift.jsValueGetArray(core).map { Value(fromCore: $0) })
+        } else if core.isObject() {
+            var object: [String: Value] = [:]
+            for entry in elemswift.jsValueGetObjectEntries(core) {
+                object[String(entry.first)] = Value(fromCore: entry.second)
+            }
+            self = .object(object)
+        } else {
+            self = .null
+        }
+    }
+
     func toCore() -> elem.js.Value {
         switch self {
         case .null:

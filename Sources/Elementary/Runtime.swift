@@ -28,4 +28,13 @@ public final class Runtime {
     public func reset() {
         coreRuntime.reset()
     }
+    
+    public func processQueuedEvents(eventCallback: @escaping (_ name: String, _ payload: Value) -> Void) -> Void {
+        // TODO: Optimization, currently the event name and payload are copied out into the Swift layer
+        // we may be able to find a way to call the reference returning methods on elem.js.Value and
+        // instead provide a Swift friendly const view into them without copying into Swift.
+        coreRuntime.processQueuedEvents(elemswift.Runtime.ProcessEventsCallbackFn { eventName, eventPayload in
+            eventCallback(String(eventName), Value(fromCore: eventPayload))
+        })
+    }
 }

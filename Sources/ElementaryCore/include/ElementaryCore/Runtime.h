@@ -1,10 +1,13 @@
 #pragma once
 
 #include "../../../../Vendor/elementary/runtime/elem/Runtime.h"
+#include "../../../../Vendor/elementary/runtime/elem/Value.h"
 
 #include <cstddef>
 #include <memory>
 #include <string>
+#include <utility>
+#include <vector>
 
 namespace elemswift {
 
@@ -23,13 +26,15 @@ public:
         float** outputChannelData, size_t numOutputChannels,
         size_t numSamples);
 
-    // TODO: Implement event processing
-
+    /// In order to make this swift friendly, we have to copy the event name by value instead of const&
+    using ProcessEventsCallbackFn = std::function<void(std::string, elem::js::Value)>;
+    void processQueuedEvents(ProcessEventsCallbackFn evtCallback);
+    
     void reset();
-
+    
     using NodeFactoryFn = elem::Runtime<float>::NodeFactoryFn;
     int registerNodeType(std::string const& type, NodeFactoryFn&& fn);
-
+    
 private:
     friend class Renderer;
     /// The underlying Elementary runtime. It is hardcoded to float because AVAudioEngine on Apple platforms use Float32

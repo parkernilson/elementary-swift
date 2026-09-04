@@ -25,6 +25,7 @@
 #include "ElementaryCore/GraphNode.h"
 #include "ElementaryCore/Renderer.h"
 #include "ElementaryCore/Runtime.h"
+#include "ElementaryCore/Value.h"
 #include "ElementaryCore/lib/Core.h"
 #include "ElementaryCore/lib/Math.h"
 #include "ElementaryCore/lib/Signals.h"
