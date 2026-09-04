@@ -2,6 +2,7 @@
 
 #include "../../../../Vendor/elementary/runtime/elem/Runtime.h"
 #include "../../../../Vendor/elementary/runtime/elem/Value.h"
+#include "../../../../Vendor/elementary/runtime/elem/AudioBufferResource.h"
 #include "GraphNode.h"
 
 #include <cstddef>
@@ -41,8 +42,17 @@ public:
     // back a std::vector instead, which Swift can iterate.
     std::vector<NodeId> gc();
 
-    // TODO: Implement shared resources
-    
+    // Takes ownership of an already-constructed AudioBufferResource. Intended for
+    // internal use by higher-level Swift helpers that already know how to decode
+    // samples into an AudioBufferResource. Returns false if `name` is already taken.
+    bool addSharedResource(std::string const& name, elem::AudioBufferResource resource);
+
+    // Removes shared resources that are no longer referenced by any active graph node.
+    void pruneSharedResources();
+
+    // Returns the names of all currently registered shared resources.
+    std::vector<std::string> getSharedResourceMapKeys();
+
 private:
     friend class Renderer;
     /// The underlying Elementary runtime. It is hardcoded to float because AVAudioEngine on Apple platforms use Float32
