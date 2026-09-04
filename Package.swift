@@ -56,14 +56,14 @@ let package = Package(
                 .interoperabilityMode(.Cxx),
             ]
         ),
-//        .testTarget(
-//            name: "ElementaryTests",
-//            dependencies: ["Elementary"],
-//            path: "Tests/ElementaryTests",
-//            swiftSettings: [
-//                .interoperabilityMode(.Cxx),
-//            ]
-//        ),
+        .testTarget(
+            name: "ElementaryTests",
+            dependencies: ["Elementary"],
+            path: "Tests/ElementaryTests",
+            swiftSettings: [
+                .interoperabilityMode(.Cxx),
+            ]
+        ),
     ],
     cxxLanguageStandard: .cxx17
 )
