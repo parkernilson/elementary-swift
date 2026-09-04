@@ -35,6 +35,10 @@ public:
     using NodeFactoryFn = elem::Runtime<float>::NodeFactoryFn;
     int registerNodeType(std::string const& type, NodeFactoryFn&& fn);
     
+    // TODO: Implement gc
+    
+    // TODO: Implement shared resources
+    
 private:
     friend class Renderer;
     /// The underlying Elementary runtime. It is hardcoded to float because AVAudioEngine on Apple platforms use Float32
