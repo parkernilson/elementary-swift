@@ -59,9 +59,10 @@ internal func decodeAudioBufferResource(fileURL: URL) throws -> elem.AudioBuffer
     let numChannels = Int(buffer.format.channelCount)
     var channelPointers: [UnsafeMutablePointer<Float>?] =
         (0..<numChannels).map { channelData[$0] }
-
+    
+    
     return channelPointers.withUnsafeMutableBufferPointer { pointer in
-        elemswift.makeAudioBufferResource(
+        elem.AudioBufferResource(
             pointer.baseAddress,
             numChannels,
             Int(buffer.frameLength)
@@ -110,10 +111,12 @@ internal func __decodedAudioBufferResourceSamples(
     let numSamples = resource.numSamples()
 
     let channelSamples: [[Float]] = (0..<numChannels).map { channel in
-        guard let data = elemswift.audioBufferResourceChannelData(&resource, channel) else {
+        let thing = elemswift.audioBufferResourceChannelDataGet(&resource, channel)
+        
+        guard let data = thing.data() else {
             return []
         }
-        let size = elemswift.audioBufferResourceChannelSize(&resource, channel)
+        let size = thing.size()
         return Array(UnsafeBufferPointer(start: data, count: size))
     }
 
