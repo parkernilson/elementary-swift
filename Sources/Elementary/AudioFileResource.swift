@@ -8,9 +8,39 @@ public enum AudioResourceError: Error {
     case duplicateName(String)
 }
 
-/// Decodes an audio file from disk into an `elem.AudioBufferResource`, without registering it
-/// with any runtime. Used internally by `Runtime.addAudioResource(name:fileURL:)`.
-internal func decodeAudioBufferResource(fileURL: URL) throws -> elem.AudioBufferResource {
+/// A decoded audio buffer, ready to be registered as a shared resource.
+///
+/// This wraps `elem.AudioBufferResource` rather than exposing it directly: that C++ type has
+/// non-trivial copy/move/destroy semantics (it holds a `std::vector<std::vector<float>>`), and
+/// Swift's C++ interop won't let a declaration return such a type across a module boundary —
+/// not even an `internal` declaration accessed via `@testable import` (attempting it anyway
+/// surfaces a confusing `'... is inaccessible due to internal protection level'`, or, if the
+/// declaration is made `public` to work around that, a deeper `'... is inaccessible due to
+/// '@_spi' protection level'` — the compiler blocks this at two independent layers). A plain
+/// Swift `class` sidesteps this entirely: callers only ever hold a pointer to the heap object,
+/// so the class's own ABI is trivial regardless of what non-trivial C++ value it stores
+/// internally. Its methods below have plain-Swift-typed signatures, so they're freely callable
+/// cross-module — including from tests.
+internal final class DecodedAudioBuffer {
+    fileprivate var resource: elem.AudioBufferResource
+
+    fileprivate init(resource: elem.AudioBufferResource) {
+        self.resource = resource
+    }
+
+    var numChannels: Int { resource.numChannels() }
+    var numSamples: Int { resource.numSamples() }
+
+    func samples(forChannel channel: Int) -> [Float] {
+        let view = elemswift.getAudioBufferResourceChannelData(&resource, channel)
+        guard let data = view.data() else { return [] }
+        return Array(UnsafeBufferPointer(start: data, count: view.size()))
+    }
+}
+
+/// Decodes an audio file from disk into a `DecodedAudioBuffer`, without registering it with any
+/// runtime. Used internally by `Runtime.addAudioResource(name:fileURL:)`.
+internal func decodeAudioBufferResource(fileURL: URL) throws -> DecodedAudioBuffer {
     let file: AVAudioFile
     do {
         file = try AVAudioFile(forReading: fileURL)
@@ -51,7 +81,8 @@ internal func decodeAudioBufferResource(fileURL: URL) throws -> elem.AudioBuffer
     }
 
     let numChannels = Int(buffer.format.channelCount)
-    return elemswift.makeAudioBufferResource(channelData, numChannels, Int(buffer.frameLength))
+    let resource = elemswift.makeAudioBufferResource(channelData, numChannels, Int(buffer.frameLength))
+    return DecodedAudioBuffer(resource: resource)
 }
 
 extension Runtime {
@@ -67,42 +98,12 @@ extension Runtime {
     /// since the underlying shared resource map is not synchronized.
     @discardableResult
     public func addAudioResource(name: String, fileURL: URL) throws -> Bool {
-        let resource = try decodeAudioBufferResource(fileURL: fileURL)
+        let decoded = try decodeAudioBufferResource(fileURL: fileURL)
 
-        guard addSharedResource(name: name, resource: resource) else {
+        guard addSharedResource(name: name, resource: decoded.resource) else {
             throw AudioResourceError.duplicateName(name)
         }
 
         return true
     }
-}
-
-/// Test-support only: decodes a file via `decodeAudioBufferResource` and immediately extracts
-/// its channel/sample data into plain Swift types.
-///
-/// `elem.AudioBufferResource` itself can't be returned from an `internal` declaration and used
-/// across a module boundary — Swift's C++ interop doesn't expose that direction (return
-/// position, including nested inside a closure parameter type) via `@testable import`, even
-/// though passing the same type as a direct parameter works fine (as `Runtime.addSharedResource`
-/// already does). Keeping this function's own signature free of any `elem` type sidesteps that,
-/// so tests can verify the real decode path's output without needing the type itself.
-internal func __decodedAudioBufferResourceSamples(
-    fileURL: URL
-) throws -> (numChannels: Int, numSamples: Int, channelSamples: [[Float]]) {
-    var resource = try decodeAudioBufferResource(fileURL: fileURL)
-
-    let numChannels = resource.numChannels()
-    let numSamples = resource.numSamples()
-
-    let channelSamples: [[Float]] = (0..<numChannels).map { channel in
-        let thing = elemswift.getAudioBufferResourceChannelData (&resource, channel)
-        
-        guard let data = thing.data() else {
-            return []
-        }
-        let size = thing.size()
-        return Array(UnsafeBufferPointer(start: data, count: size))
-    }
-
-    return (numChannels, numSamples, channelSamples)
 }
