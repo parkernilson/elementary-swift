@@ -50,25 +50,8 @@ internal func decodeAudioBufferResource(fileURL: URL) throws -> elem.AudioBuffer
         throw AudioResourceError.unsupportedFormat
     }
 
-    // TODO: Optimization, is there a compile time fix for this?
-    // the `float**` parameter imports into Swift as
-    // `UnsafeMutablePointer<UnsafeMutablePointer<Float>?>` (the C importer adds
-    // Optional to the pointee of a pointer-to-pointer), whereas
-    // `AVAudioPCMBuffer.floatChannelData` bridges as
-    // `UnsafeMutablePointer<UnsafeMutablePointer<Float>>?` (only the outer pointer is
-    // optional). Rebuild an array of optional inner pointers so the shapes line up.
     let numChannels = Int(buffer.format.channelCount)
-    var channelPointers: [UnsafeMutablePointer<Float>?] =
-        (0..<numChannels).map { channelData[$0] }
-    
-    
-    return channelPointers.withUnsafeMutableBufferPointer { pointer in
-        elem.AudioBufferResource(
-            pointer.baseAddress,
-            numChannels,
-            Int(buffer.frameLength)
-        )
-    }
+    return elemswift.makeAudioBufferResource(channelData, numChannels, Int(buffer.frameLength))
 }
 
 extension Runtime {
