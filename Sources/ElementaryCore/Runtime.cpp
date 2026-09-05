@@ -42,6 +42,10 @@ bool Runtime::addSharedResource(std::string const& name, elem::AudioBufferResour
     return mRuntime->addSharedResource(name, std::move(ptr));
 }
 
+bool Runtime::addSharedResource(std::string const& name, std::unique_ptr<elem::SharedResource> resource) {
+    return mRuntime->addSharedResource(name, std::move(resource));
+}
+
 void Runtime::pruneSharedResources() {
     mRuntime->pruneSharedResources();
 }
