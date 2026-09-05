@@ -95,7 +95,7 @@ internal func __decodedAudioBufferResourceSamples(
     let numSamples = resource.numSamples()
 
     let channelSamples: [[Float]] = (0..<numChannels).map { channel in
-        let thing = elemswift.audioBufferResourceChannelDataGet(&resource, channel)
+        let thing = elemswift.getAudioBufferResourceChannelData (&resource, channel)
         
         guard let data = thing.data() else {
             return []
