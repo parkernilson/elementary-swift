@@ -6,6 +6,8 @@ final class AudioFileResourceDecodeTests: XCTestCase {
         Bundle.module.url(forResource: "stereo-tone", withExtension: "wav", subdirectory: "Fixtures")!
     }
 
+    // TODO: Verify this test uses realistic file contents. Maybe we should use
+    // real .wav files.
     /// The stereo fixture is generated with the left channel ramping `0, 1000, 2000, 3000, ...`
     /// (mod 4) and the right channel as its exact negation, so this test can prove per-channel
     /// data survives the Swift/C++ boundary intact — not just that decoding didn't throw.
