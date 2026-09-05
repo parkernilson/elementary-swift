@@ -43,4 +43,27 @@ public final class Runtime {
     public func gc() -> [Int32] {
         Array(coreRuntime.gc())
     }
+
+    /// Registers an already-decoded audio buffer as a shared resource under `name`.
+    ///
+    /// This is `internal` — app code should use `addAudioResource(name:fileURL:)` instead.
+    /// Returns `false` if `name` is already registered (existing entries are never overwritten,
+    /// since an active graph node may hold a reference to them).
+    @discardableResult
+    internal func addSharedResource(name: String, resource: elem.AudioBufferResource) -> Bool {
+        coreRuntime.addSharedResource(std.string(name), resource)
+    }
+
+    /// Removes shared resources that are no longer referenced by any active graph node.
+    ///
+    /// Must be called from the same non-realtime thread that drives graph mutation/rendering,
+    /// since the underlying shared resource map is not synchronized.
+    public func pruneSharedResources() {
+        coreRuntime.pruneSharedResources()
+    }
+
+    /// Returns the names of all currently registered shared resources.
+    public func sharedResourceKeys() -> [String] {
+        coreRuntime.getSharedResourceMapKeys().map { String($0) }
+    }
 }

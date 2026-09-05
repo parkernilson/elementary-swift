@@ -37,4 +37,32 @@ std::vector<elem::NodeId> Runtime::gc() {
     return std::vector<elem::NodeId>(removed.begin(), removed.end());
 }
 
+bool Runtime::addSharedResource(std::string const& name, elem::AudioBufferResource resource) {
+    auto ptr = std::make_unique<elem::AudioBufferResource>(std::move(resource));
+    return mRuntime->addSharedResource(name, std::move(ptr));
+}
+
+bool Runtime::addSharedResource(std::string const& name, std::unique_ptr<elem::SharedResource> resource) {
+    return mRuntime->addSharedResource(name, std::move(resource));
+}
+
+void Runtime::pruneSharedResources() {
+    mRuntime->pruneSharedResources();
+}
+
+std::vector<std::string> Runtime::getSharedResourceMapKeys() {
+    // `keys` is a MapKeyView whose iterator's `iterator_traits::value_type` is
+    // inherited from the underlying map's iterator (a std::pair), even though
+    // operator* returns a std::string&. That mismatch makes the
+    // std::vector(InputIt, InputIt) range constructor's SFINAE check fail, so we
+    // build the vector manually via a range-based for loop instead, which only
+    // relies on operator* and not on iterator_traits.
+    auto keys = mRuntime->getSharedResourceMapKeys();
+    std::vector<std::string> result;
+    for (auto const& key : keys) {
+        result.push_back(key);
+    }
+    return result;
+}
+
 } // namespace ElementaryCore
