@@ -6,6 +6,7 @@
 #include "GraphNode.h"
 
 #include <cstddef>
+#include <functional>
 #include <memory>
 #include <string>
 #include <utility>
@@ -13,57 +14,42 @@
 
 namespace elemswift {
 
-class Runtime {
-public:
-    Runtime(double sampleRate, int blockSize);
-    ~Runtime();
+/**
+ * elemswift::Runtime is a direct alias for elem::Runtime<float>. FloatType is
+ * hardcoded to float since AVAudioEngine uses Float32.
+ *
+ * elemswift::RuntimeRef is the shared handle type used everywhere a Runtime
+ * needs to be passed around or shared with a Renderer: elem::Renderer<float>'s
+ * constructor takes exactly this type (std::shared_ptr<elem::Runtime<float>>).
+ */
+using Runtime = elem::Runtime<float>;
+using RuntimeRef = std::shared_ptr<Runtime>;
 
-    Runtime(const Runtime&) = delete;
-    Runtime& operator=(const Runtime&) = delete;
-    Runtime(Runtime&&);
-    Runtime& operator=(Runtime&&);
+// Constructs a new Runtime, returning a shared handle so it can be wired up
+// to an elemswift::Renderer.
+RuntimeRef makeRuntime(double sampleRate, int blockSize);
 
-    void process(
-        const float** inputChannelData, size_t numInputChannels,
-        float** outputChannelData, size_t numOutputChannels,
-        size_t numSamples);
+// elem::Runtime::registerNodeType takes its factory function by rvalue
+// reference (NodeFactoryFn&&), which Swift's C++ interop can't call directly.
+// This takes the factory by value and moves it into the real call.
+int registerNodeType(Runtime& runtime, std::string const& type, Runtime::NodeFactoryFn fn);
 
-    /// In order to make this swift friendly, we have to copy the event name by value instead of const&
-    using ProcessEventsCallbackFn = std::function<void(std::string, elem::js::Value)>;
-    void processQueuedEvents(ProcessEventsCallbackFn evtCallback);
-    
-    void reset();
-    
-    using NodeFactoryFn = elem::Runtime<float>::NodeFactoryFn;
-    int registerNodeType(std::string const& type, NodeFactoryFn&& fn);
-    
-    // Releases unused graph nodes, returning the ids of the nodes that were cleared.
-    // std::set doesn't support for-in on this deployment target, so this hands
-    // back a std::vector instead, which Swift can iterate.
-    std::vector<NodeId> gc();
+/// In order to make this swift friendly, we have to copy the event name by value instead of const&
+using ProcessEventsCallbackFn = std::function<void(std::string, elem::js::Value)>;
+void processQueuedEvents(Runtime& runtime, ProcessEventsCallbackFn evtCallback);
 
-    // Takes ownership of an already-constructed AudioBufferResource. Intended for
-    // internal use by higher-level Swift helpers that already know how to decode
-    // samples into an AudioBufferResource. Returns false if `name` is already taken.
-    bool addSharedResource(std::string const& name, elem::AudioBufferResource resource);
+// Releases unused graph nodes, returning the ids of the nodes that were cleared.
+// std::set doesn't support for-in on this deployment target, so this hands
+// back a std::vector instead, which Swift can iterate.
+std::vector<NodeId> gc(Runtime& runtime);
 
-    // Takes ownership of an arbitrary SharedResource implementation. This overload
-    // exists for C++ consumers linking directly against ElementaryCore that define
-    // their own SharedResource subclass — Swift can't subclass a C++ type, so this
-    // isn't reachable from Swift, but it's a plain forward to the underlying
-    // elem::Runtime for anyone building against this library in C++. Returns false
-    // if `name` is already taken.
-    bool addSharedResource(std::string const& name, std::unique_ptr<elem::SharedResource> resource);
+// Takes ownership of an already-constructed AudioBufferResource, wrapping it in
+// the unique_ptr<SharedResource> that elem::Runtime::addSharedResource requires
+// - Swift can't construct that unique_ptr itself. Returns false if `name` is
+// already taken.
+bool addSharedResource(Runtime& runtime, std::string const& name, elem::AudioBufferResource resource);
 
-    // Removes shared resources that are no longer referenced by any active graph node.
-    void pruneSharedResources();
+// Returns the names of all currently registered shared resources.
+std::vector<std::string> getSharedResourceMapKeys(Runtime& runtime);
 
-    // Returns the names of all currently registered shared resources.
-    std::vector<std::string> getSharedResourceMapKeys();
-
-private:
-    friend class Renderer;
-    /// The underlying Elementary runtime. It is hardcoded to float because AVAudioEngine on Apple platforms use Float32
-    std::shared_ptr<elem::Runtime<float>> mRuntime;
-};
-} // namespace ElementaryCore
+} // namespace elemswift
