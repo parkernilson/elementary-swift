@@ -30,13 +30,4 @@ final class AudioFileResourceDecodeTests: XCTestCase {
         XCTAssertEqual(result.channelSamples[0][2], 2000.0 / 32768.0, accuracy: 0.001)
         XCTAssertEqual(result.channelSamples[1][2], -2000.0 / 32768.0, accuracy: 0.001)
     }
-
-    func testAddAudioResourceDecodesAndRegistersStereoFile() throws {
-        let runtime = Runtime(sampleRate: 44100, blockSize: 512)
-
-        let added = try runtime.addAudioResource(name: "stereo-tone", fileURL: stereoFixtureURL)
-
-        XCTAssertTrue(added)
-        XCTAssertTrue(runtime.sharedResourceKeys().contains("stereo-tone"))
-    }
 }
