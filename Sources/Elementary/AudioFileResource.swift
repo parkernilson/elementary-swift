@@ -50,7 +50,7 @@ internal func decodeAudioBufferResource(fileURL: URL) throws -> elem.AudioBuffer
         throw AudioResourceError.unsupportedFormat
     }
 
-    // `elem.AudioBufferResource`'s C++ `float**` constructor imports into Swift as
+    // `elemswift.makeAudioBufferResource`'s `float**` parameter imports into Swift as
     // `UnsafeMutablePointer<UnsafeMutablePointer<Float>?>` (the C importer adds
     // Optional to the pointee of a pointer-to-pointer), whereas
     // `AVAudioPCMBuffer.floatChannelData` bridges as
@@ -61,7 +61,7 @@ internal func decodeAudioBufferResource(fileURL: URL) throws -> elem.AudioBuffer
         (0..<numChannels).map { channelData[$0] }
 
     return channelPointers.withUnsafeMutableBufferPointer { pointer in
-        elem.AudioBufferResource(
+        elemswift.makeAudioBufferResource(
             pointer.baseAddress,
             numChannels,
             Int(buffer.frameLength)
@@ -90,4 +90,32 @@ extension Runtime {
 
         return true
     }
+}
+
+/// Test-support only: decodes a file via `decodeAudioBufferResource` and immediately extracts
+/// its channel/sample data into plain Swift types.
+///
+/// `elem.AudioBufferResource` itself can't be returned from an `internal` declaration and used
+/// across a module boundary — Swift's C++ interop doesn't expose that direction (return
+/// position, including nested inside a closure parameter type) via `@testable import`, even
+/// though passing the same type as a direct parameter works fine (as `Runtime.addSharedResource`
+/// already does). Keeping this function's own signature free of any `elem` type sidesteps that,
+/// so tests can verify the real decode path's output without needing the type itself.
+internal func __decodedAudioBufferResourceSamples(
+    fileURL: URL
+) throws -> (numChannels: Int, numSamples: Int, channelSamples: [[Float]]) {
+    var resource = try decodeAudioBufferResource(fileURL: fileURL)
+
+    let numChannels = resource.numChannels()
+    let numSamples = resource.numSamples()
+
+    let channelSamples: [[Float]] = (0..<numChannels).map { channel in
+        guard let data = elemswift.audioBufferResourceChannelData(&resource, channel) else {
+            return []
+        }
+        let size = elemswift.audioBufferResourceChannelSize(&resource, channel)
+        return Array(UnsafeBufferPointer(start: data, count: size))
+    }
+
+    return (numChannels, numSamples, channelSamples)
 }

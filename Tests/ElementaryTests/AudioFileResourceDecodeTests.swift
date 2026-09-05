@@ -6,13 +6,31 @@ final class AudioFileResourceDecodeTests: XCTestCase {
         Bundle.module.url(forResource: "stereo-tone", withExtension: "wav", subdirectory: "Fixtures")!
     }
 
-    // NOTE: This was intended to call `decodeAudioBufferResource(fileURL:)` directly and assert
-    // on individual sample values read back via `elem.AudioBufferResource.getChannelData(_:)`, to
-    // prove per-channel data survives the Swift/C++ boundary intact. That turned out to be
-    // blocked by two independent Swift/C++ interop limitations — see
-    // final-review-fix-report.md for the full writeup — so this test is limited to what's
-    // actually possible: proving the stereo file decodes and registers successfully end-to-end
-    // via the public API.
+    /// The stereo fixture is generated with the left channel ramping `0, 1000, 2000, 3000, ...`
+    /// (mod 4) and the right channel as its exact negation, so this test can prove per-channel
+    /// data survives the Swift/C++ boundary intact — not just that decoding didn't throw.
+    func testDecodeAudioBufferResourcePreservesPerChannelSampleData() throws {
+        let result = try __decodedAudioBufferResourceSamples(fileURL: stereoFixtureURL)
+
+        XCTAssertEqual(result.numChannels, 2)
+        XCTAssertEqual(result.numSamples, 40)
+        XCTAssertEqual(result.channelSamples[0].count, 40)
+        XCTAssertEqual(result.channelSamples[1].count, 40)
+
+        // frame 0: both channels are 0 — not very discriminating on its own, but checked anyway.
+        XCTAssertEqual(result.channelSamples[0][0], 0, accuracy: 0.001)
+        XCTAssertEqual(result.channelSamples[1][0], 0, accuracy: 0.001)
+
+        // frame 1: left = 1000/32768, right = -1000/32768. A tolerance this tight only passes
+        // if the channels are neither swapped, aliased, nor scrambled by the pointer rebuild.
+        XCTAssertEqual(result.channelSamples[0][1], 1000.0 / 32768.0, accuracy: 0.001)
+        XCTAssertEqual(result.channelSamples[1][1], -1000.0 / 32768.0, accuracy: 0.001)
+
+        // frame 2: left = 2000/32768, right = -2000/32768.
+        XCTAssertEqual(result.channelSamples[0][2], 2000.0 / 32768.0, accuracy: 0.001)
+        XCTAssertEqual(result.channelSamples[1][2], -2000.0 / 32768.0, accuracy: 0.001)
+    }
+
     func testAddAudioResourceDecodesAndRegistersStereoFile() throws {
         let runtime = Runtime(sampleRate: 44100, blockSize: 512)
 
