@@ -31,7 +31,6 @@ let package = Package(
             path: "Sources/ElementaryCore",
             sources: [
                 "Runtime.cpp",
-                "Renderer.cpp",
             ],
             publicHeadersPath: "include",
             cxxSettings: [

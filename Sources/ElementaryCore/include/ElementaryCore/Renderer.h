@@ -9,22 +9,12 @@ namespace elemswift {
 using NodeRef = elem::NodeRef;
 using RenderResult = elem::RenderResult;
 
-class Renderer {
-public:
-    explicit Renderer(const elemswift::Runtime& runtime);
-    ~Renderer();
-    
-    Renderer(const Renderer&) = delete;
-    Renderer& operator=(const Renderer&) = delete;
-    Renderer(const Renderer&&);
-    Renderer& operator=(const Renderer&&);
-    
-    RenderResult renderGraph(lib::NodeReprSPtrVector graphs, elem::RenderOptions options);
-    
-    NodeRef createRef(std::string kind, elem::js::Object props, lib::NodeReprSPtrVector children);
-    
-private:
-    std::unique_ptr<elem::Renderer<float>> mRenderer;
-};
+/**
+ * elemswift::Renderer is a direct alias for elem::Renderer<float>. Its
+ * constructor takes an elemswift::RuntimeRef (std::shared_ptr<elem::Runtime<float>>),
+ * the same shared handle type a Runtime is constructed through, so a Renderer
+ * shares ownership of the Runtime it renders against.
+ */
+using Renderer = elem::Renderer<float>;
 
-}
+} // namespace elemswift
