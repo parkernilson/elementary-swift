@@ -44,6 +44,8 @@ public final class Runtime {
         Array(coreRuntime.gc())
     }
 
+    // TODO: Improve this comment and figure out if there is a better way of structuring the
+    // shared resource API in the Swift layer
     /// Registers an already-decoded audio buffer as a shared resource under `name`.
     ///
     /// This is `internal` — app code should use `addAudioResource(name:fileURL:)` instead.

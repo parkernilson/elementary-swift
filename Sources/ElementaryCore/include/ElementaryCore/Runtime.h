@@ -17,6 +17,8 @@ class Runtime {
 public:
     Runtime(double sampleRate, int blockSize);
     ~Runtime();
+    
+    Runtime(std::shared_ptr<elem::Runtime<float>> runtime);
 
     Runtime(const Runtime&) = delete;
     Runtime& operator=(const Runtime&) = delete;

@@ -6,6 +6,8 @@ Runtime::Runtime(double sampleRate, int blockSize): mRuntime{std::make_shared<el
 
 Runtime::~Runtime() = default;
 
+Runtime::Runtime(std::shared_ptr<elem::Runtime<float>> runtime): mRuntime{std::move(runtime)} {}
+
 Runtime::Runtime(Runtime&&) = default;
 Runtime& Runtime::operator=(Runtime&&) = default;
 
@@ -37,6 +39,7 @@ std::vector<elem::NodeId> Runtime::gc() {
     return std::vector<elem::NodeId>(removed.begin(), removed.end());
 }
 
+// TODO: Add comment about why we can't pass std::shared_ptr<elem::AudioBufferResource> from Swift
 bool Runtime::addSharedResource(std::string const& name, elem::AudioBufferResource resource) {
     auto ptr = std::make_unique<elem::AudioBufferResource>(std::move(resource));
     return mRuntime->addSharedResource(name, std::move(ptr));
@@ -50,6 +53,7 @@ void Runtime::pruneSharedResources() {
     mRuntime->pruneSharedResources();
 }
 
+// TODO: Add a comment about why this signature is different between elem and elemswift
 std::vector<std::string> Runtime::getSharedResourceMapKeys() {
     // `keys` is a MapKeyView whose iterator's `iterator_traits::value_type` is
     // inherited from the underlying map's iterator (a std::pair), even though
