@@ -1,18 +1,18 @@
 internal import ElementaryCore
 
 public final class Runtime {
-    internal var coreRuntime: elemswift.Runtime
+    internal var coreRuntime: elemswift.RuntimeRef
 
     public init(sampleRate: Double, blockSize: Int32) {
-        coreRuntime = elemswift.Runtime(sampleRate, blockSize)
+        coreRuntime = elemswift.makeRuntime(sampleRate, blockSize)
     }
-    
+
     /**
      * Construct this runtime from a custom runtime.
      * This can be used to set up the runtime with c++ methods like
      * custom nodes, etc. and then construct a Swift Runtime
      */
-    public init(_ runtime: consuming elemswift.Runtime) {
+    public init(_ runtime: elemswift.RuntimeRef) {
         coreRuntime = runtime
     }
 
@@ -22,18 +22,18 @@ public final class Runtime {
         numChannels: Int,
         numFrames: Int
     ) {
-        coreRuntime.process(nil, 0, outputChannelData, numChannels, numFrames)
+        elemswift.process(coreRuntime, nil, 0, outputChannelData, numChannels, numFrames)
     }
 
     public func reset() {
-        coreRuntime.reset()
+        elemswift.reset(coreRuntime)
     }
-    
+
     public func processQueuedEvents(eventCallback: @escaping (_ name: String, _ payload: Value) -> Void) -> Void {
         // TODO: Optimization, currently the event name and payload are copied out into the Swift layer
         // we may be able to find a way to call the reference returning methods on elem.js.Value and
         // instead provide a Swift friendly const view into them without copying into Swift.
-        coreRuntime.processQueuedEvents(elemswift.Runtime.ProcessEventsCallbackFn { eventName, eventPayload in
+        elemswift.processQueuedEvents(coreRuntime, elemswift.ProcessEventsCallbackFn { eventName, eventPayload in
             eventCallback(String(eventName), Value(fromCore: eventPayload))
         })
     }
@@ -41,7 +41,7 @@ public final class Runtime {
     /// Releases unused graph nodes, returning the ids of the nodes that were cleared.
     @discardableResult
     public func gc() -> [Int32] {
-        Array(coreRuntime.gc())
+        Array(elemswift.gc(coreRuntime))
     }
 
     /// Registers an already-decoded audio buffer as a shared resource under `name`.
@@ -51,7 +51,7 @@ public final class Runtime {
     /// since an active graph node may hold a reference to them).
     @discardableResult
     internal func addSharedResource(name: String, resource: elem.AudioBufferResource) -> Bool {
-        coreRuntime.addSharedResource(std.string(name), resource)
+        elemswift.addSharedResource(coreRuntime, std.string(name), resource)
     }
 
     /// Removes shared resources that are no longer referenced by any active graph node.
@@ -59,11 +59,11 @@ public final class Runtime {
     /// Must be called from the same non-realtime thread that drives graph mutation/rendering,
     /// since the underlying shared resource map is not synchronized.
     public func pruneSharedResources() {
-        coreRuntime.pruneSharedResources()
+        elemswift.pruneSharedResources(coreRuntime)
     }
 
     /// Returns the names of all currently registered shared resources.
     public func sharedResourceKeys() -> [String] {
-        coreRuntime.getSharedResourceMapKeys().map { String($0) }
+        elemswift.getSharedResourceMapKeys(coreRuntime).map { String($0) }
     }
 }

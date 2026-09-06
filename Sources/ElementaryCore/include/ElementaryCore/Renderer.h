@@ -17,4 +17,25 @@ using RenderResult = elem::RenderResult;
  */
 using Renderer = elem::Renderer<float>;
 
+// elem::Renderer<float>::renderGraph/createRef are header-only template methods.
+// If Swift called them directly, Swift's own C++-interop compilation would become
+// the first (and only) place some of their internal helper templates (e.g. the
+// render-sequence-building machinery used by renderGraph) get instantiated. Those
+// instantiations get weak/COMDAT linkage, and this package's build combines
+// ElementaryCore's translation units into a single intermediate object before
+// linking against the Elementary target — a combine step that, in this toolchain,
+// silently demotes such weak template symbols to local/hidden even when a
+// same-signature instantiation already exists elsewhere in ElementaryCore. The
+// result is an "undefined symbol" at final link time that only reproduces once
+// everything is linked together (swift test), not at compile time or at
+// `swift build --target ElementaryCore`.
+//
+// Routing every call through these plain (non-template) free functions means the
+// only place elem::Renderer<float>'s methods are ever called is here, inside
+// ElementaryCore's own plain C++ compilation — never from Swift's interop layer —
+// so this can never happen again regardless of how the two targets get combined.
+RenderResult renderGraph(Renderer& renderer, lib::NodeReprSPtrVector graphs, elem::RenderOptions options);
+
+NodeRef createRef(Renderer& renderer, std::string kind, elem::js::Object props, lib::NodeReprSPtrVector children);
+
 } // namespace elemswift
