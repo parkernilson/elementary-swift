@@ -23,9 +23,21 @@ let package = Package(
         ),
     ],
     targets: [
-        // C++ shim: hand-written, non-template wrapper around elementary.
-        // Swift's C++ importer needs a concrete API surface since it can't
-        // import C++ class templates directly.
+        // C++ shim: `using` aliases over the vendored elem::Runtime<float>/
+        // elem::Renderer<float> templates, plus free functions for the
+        // handful of calls Swift's C++ interop can't make directly (e.g.
+        // dereferencing a std::shared_ptr, passing rvalue-ref parameters).
+        //
+        // Critically, this target's .cpp files (Runtime.cpp, Renderer.cpp)
+        // must keep existing and keep calling into these templates directly:
+        // letting Swift's own C++-interop compilation be the first place a
+        // template method gets instantiated can produce weak symbols that
+        // get silently demoted to local linkage when this package's build
+        // combines ElementaryCore's object files, causing an undefined-symbol
+        // link error in `swift test`. See the header comment on
+        // elemswift::renderGraph/createRef in
+        // Sources/ElementaryCore/include/ElementaryCore/Renderer.h for the
+        // full explanation.
         .target(
             name: "ElementaryCore",
             path: "Sources/ElementaryCore",

@@ -14,6 +14,11 @@ using RenderResult = elem::RenderResult;
  * constructor takes an elemswift::RuntimeRef (std::shared_ptr<elem::Runtime<float>>),
  * the same shared handle type a Runtime is constructed through, so a Renderer
  * shares ownership of the Runtime it renders against.
+ *
+ * Note: unlike the old wrapper class, this alias is copyable — copying it
+ * forks its internal ref-key counter (elem::Renderer's NodeId nextRefId),
+ * which can cause colliding `__refKey:N` props between copies sharing a
+ * runtime. Avoid copying; treat it as move-only in practice.
  */
 using Renderer = elem::Renderer<float>;
 
@@ -31,9 +36,14 @@ using Renderer = elem::Renderer<float>;
 // `swift build --target ElementaryCore`.
 //
 // Routing every call through these plain (non-template) free functions means the
-// only place elem::Renderer<float>'s methods are ever called is here, inside
-// ElementaryCore's own plain C++ compilation — never from Swift's interop layer —
-// so this can never happen again regardless of how the two targets get combined.
+// only place elem::Renderer<float>'s non-trivial methods (renderGraph/createRef)
+// are ever called is here, inside ElementaryCore's own plain C++ compilation —
+// never from Swift's interop layer — so this link failure can never happen again
+// for these methods regardless of how the two targets get combined.
+//
+// (Renderer.swift does still call elem::Renderer<float>'s constructor directly —
+// that's safe because its body is just a std::shared_ptr move and instantiates
+// nothing that needs external linkage.)
 RenderResult renderGraph(Renderer& renderer, lib::NodeReprSPtrVector graphs, elem::RenderOptions options);
 
 NodeRef createRef(Renderer& renderer, std::string kind, elem::js::Object props, lib::NodeReprSPtrVector children);

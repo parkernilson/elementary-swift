@@ -1,5 +1,7 @@
 # elemswift Runtime/Renderer Alias Refactor Implementation Plan
 
+> **Amended during implementation:** The design below turned out to have two real bugs, fixed in commit `d32ad59`. (1) Swift's C++ interop cannot dereference `std::shared_ptr<T>` (no `.pointee`/`.get()`), so the plan's `Runtime&`-taking free functions and `coreRuntime.pointee` calls are wrong — the actual free functions in `Runtime.h` take `elemswift::RuntimeRef` (the `shared_ptr`) by value instead. (2) "`Renderer.h` becomes alias-only, no `.cpp` needed" caused a real undefined-symbol link error at `swift test` time, root-caused to a weak template symbol getting demoted to local linkage when SwiftPM combines ElementaryCore's object files; `Renderer.cpp` was restored with plain free functions `elemswift::renderGraph`/`elemswift::createRef`. See `.superpowers/sdd/2026-09-05-elemswift-runtime-renderer-aliases/progress.md` for the full investigation. The body below is left as originally written (what was planned), not as what shipped.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Replace the hand-written `elemswift::Runtime`/`elemswift::Renderer` wrapper classes with thin `using` type aliases over `elem::Runtime<float>`/`elem::Renderer<float>`, plus free functions for the handful of calls Swift can't make directly.
